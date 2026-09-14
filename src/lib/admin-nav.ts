@@ -1,0 +1,15 @@
+export const ADMIN_NAV = [
+  { href: "/admin", label: "Resumen", freq: null },
+  { href: "/admin/mensajes", label: "Mensajes de contacto", freq: null },
+  { href: "/admin/blog", label: "Blog", freq: "Cambia seguido" },
+  { href: "/admin/configuracion", label: "Disponibilidad y agenda", freq: "Cambia seguido" },
+  { href: "/admin/testimonios", label: "Testimonios", freq: "Cambia seguido" },
+  { href: "/admin/faq", label: "Preguntas frecuentes", freq: "Cambia seguido" },
+  { href: "/admin/servicios", label: "Precios y modalidades", freq: "Cambia ocasionalmente" },
+  { href: "/admin/pagos", label: "Métodos de pago", freq: "Cambia ocasionalmente" },
+  { href: "/admin/sobre-mi", label: "Sobre mí y formación", freq: "Cambia rara vez" },
+  { href: "/admin/audiencia", label: "A quién atiendo", freq: "Cambia rara vez" },
+  { href: "/admin/especialidades", label: "Temas y especialidades", freq: "Cambia rara vez" },
+  { href: "/admin/proceso", label: "Cómo trabajo", freq: "Cambia rara vez" },
+  { href: "/admin/cuenta", label: "Mi cuenta", freq: null },
+] as const;

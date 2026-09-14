@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+:root {
+  /* Paleta cálida: morado, lila, aguamarina, gris, rosado suave */
+  --color-purple-50: #f5f1fb;
+  --color-purple-100: #ebe2f7;
+  --color-purple-200: #d3c1ec;
+  --color-purple-300: #b69bdf;
+  --color-purple-400: #9575d1;
+  --color-purple-500: #7a58bf;
+  --color-purple-600: #6444a6;
+  --color-purple-700: #503687;
+
+  --color-lilac-100: #efe8fa;
+  --color-lilac-300: #cbb8ea;
+
+  --color-aqua-100: #e2f6f2;
+  --color-aqua-300: #a6e2d6;
+  --color-aqua-500: #4fb8a8;
+  --color-aqua-600: #3a9c8d;
+
+  --color-pink-100: #fbeaf0;
+  --color-pink-300: #f2b9cd;
+  --color-pink-500: #e58aac;
+
+  --color-ink-900: #2c2438;
+  --color-ink-700: #4a4056;
+  --color-ink-500: #6f6580;
+
+  --background: #fdfbfd;
+  --foreground: var(--color-ink-900);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-purple-50: var(--color-purple-50);
+  --color-purple-100: var(--color-purple-100);
+  --color-purple-200: var(--color-purple-200);
+  --color-purple-300: var(--color-purple-300);
+  --color-purple-400: var(--color-purple-400);
+  --color-purple-500: var(--color-purple-500);
+  --color-purple-600: var(--color-purple-600);
+  --color-purple-700: var(--color-purple-700);
+
+  --color-lilac-100: var(--color-lilac-100);
+  --color-lilac-300: var(--color-lilac-300);
+
+  --color-aqua-100: var(--color-aqua-100);
+  --color-aqua-300: var(--color-aqua-300);
+  --color-aqua-500: var(--color-aqua-500);
+  --color-aqua-600: var(--color-aqua-600);
+
+  --color-pink-100: var(--color-pink-100);
+  --color-pink-300: var(--color-pink-300);
+  --color-pink-500: var(--color-pink-500);
+
+  --color-ink-900: var(--color-ink-900);
+  --color-ink-700: var(--color-ink-700);
+  --color-ink-500: var(--color-ink-500);
+
+  --font-display: var(--font-poppins);
+  --font-sans: var(--font-nunito);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+}
+
+.prose-warm {
+  color: var(--color-ink-700);
+  line-height: 1.75;
+}
+.prose-warm p {
+  margin-bottom: 1em;
+}
+.prose-warm strong {
+  color: var(--color-ink-900);
+}
+.prose-warm ul {
+  list-style: disc;
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+.prose-warm img {
+  border-radius: 1rem;
+  margin: 1.5em 0;
+}

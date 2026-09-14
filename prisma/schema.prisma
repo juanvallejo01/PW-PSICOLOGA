@@ -1,0 +1,192 @@
+// Prisma schema — sitio de la psicóloga (terapia online)
+// Todo el contenido editable vive aquí para que el panel /admin
+// pueda modificarlo sin tocar código.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ---------- Auth ----------
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// ---------- Configuración general (singleton) ----------
+
+model SiteSettings {
+  id Int @id @default(1)
+
+  // Header / marca
+  siteName String @default("Psicóloga")
+  logoText String @default("Psic.")
+
+  // Hero
+  heroTitle           String @default("Pedir ayuda no es debilidad. No estás mal por sentir lo que sientes.")
+  heroSubtitle         String @default("Terapia online para adultos, jóvenes, niños, parejas y familias de habla hispana, en cualquier parte del mundo.")
+  heroImageUrl         String?
+  heroCtaPrimaryText   String @default("Reservar mi primera sesión")
+  heroCtaSecondaryText String @default("Conocé cómo trabajo")
+
+  // Agenda / reserva
+  bookingMode          String  @default("whatsapp") // "whatsapp" | "form"
+  scheduleText         String  @default("Consultar disponibilidad de días y horarios.")
+  cancellationPolicy   String  @default("Se solicita avisar con al menos 1 día de anticipación para cancelar o reprogramar.")
+
+  // Contacto
+  whatsappNumber        String?
+  whatsappMessageTemplate String @default("Hola, quiero agendar mi primera sesión.")
+  phone                 String?
+  phoneVisible          Boolean @default(false)
+  contactEmail          String?
+
+  // Footer / legal
+  footerLegalText String @default("La información compartida en sesión es confidencial. Los datos personales enviados a través de este sitio se usan únicamente para gestionar tu atención y no se comparten con terceros.")
+
+  updatedAt DateTime @updatedAt
+}
+
+model SocialLink {
+  id       String  @id @default(cuid())
+  platform String // "instagram" | "facebook" | "tiktok" | "linkedin" | "whatsapp" | ...
+  url      String
+  visible  Boolean @default(true)
+  order    Int     @default(0)
+}
+
+// ---------- Sobre mí ----------
+
+model AboutContent {
+  id            Int     @id @default(1)
+  photoUrl      String?
+  title         String  @default("Psicóloga Terapeuta")
+  yearsExperience Int   @default(16)
+  bioHtml       String  @default("")
+  closingQuote  String  @default("")
+  updatedAt     DateTime @updatedAt
+}
+
+model EducationItem {
+  id          String  @id @default(cuid())
+  type        String  @default("course") // "degree" | "course"
+  title       String
+  institution String?
+  period      String? // ej. "2007–2013"
+  order       Int     @default(0)
+}
+
+// ---------- A quién atiendo ----------
+
+model AudienceGroup {
+  id          String @id @default(cuid())
+  name        String
+  description String  @default("")
+  icon        String  @default("") // nombre de ícono simple
+  order       Int     @default(0)
+  published   Boolean @default(true)
+}
+
+// ---------- Temas y especialidades ----------
+
+model Specialty {
+  id        String  @id @default(cuid())
+  title     String
+  icon      String  @default("")
+  order     Int     @default(0)
+  published Boolean @default(true)
+}
+
+// ---------- Cómo trabajo ----------
+
+model ProcessStep {
+  id          String @id @default(cuid())
+  order       Int    @default(0)
+  title       String
+  description String @default("")
+}
+
+// ---------- Servicios y modalidades ----------
+
+model Service {
+  id          String  @id @default(cuid())
+  name        String
+  description String  @default("")
+  duration    String  @default("") // ej. "45–60 min"
+  price       String? // null/"" => "Consultar valores"
+  frequency   String  @default("")
+  order       Int     @default(0)
+  active      Boolean @default(true)
+}
+
+// ---------- Métodos de pago ----------
+
+model PaymentMethod {
+  id     String  @id @default(cuid())
+  name   String
+  active Boolean @default(true)
+  order  Int     @default(0)
+}
+
+model PaymentInfo {
+  id               Int     @id @default(1)
+  whenToPay        String  @default("Consultar") // "before" | "after" | texto libre
+  issuesInvoice    Boolean @default(false)
+  acceptsInsurance Boolean @default(false)
+  notes            String  @default("")
+  updatedAt        DateTime @updatedAt
+}
+
+// ---------- FAQ ----------
+
+model Faq {
+  id        String  @id @default(cuid())
+  question  String
+  answer    String  @default("")
+  order     Int     @default(0)
+  published Boolean @default(true)
+}
+
+// ---------- Blog ----------
+
+model BlogPost {
+  id            String    @id @default(cuid())
+  title         String
+  slug          String    @unique
+  excerpt       String    @default("")
+  contentHtml   String    @default("")
+  coverImageUrl String?
+  published     Boolean   @default(false)
+  publishedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// ---------- Testimonios ----------
+
+model Testimonial {
+  id            String  @id @default(cuid())
+  quote         String
+  authorInitials String @default("Paciente anónimo")
+  published     Boolean @default(false)
+  order         Int     @default(0)
+}
+
+// ---------- Contacto ----------
+
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
