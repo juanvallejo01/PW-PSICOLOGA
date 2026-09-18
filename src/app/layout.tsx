@@ -18,11 +18,11 @@ const nunito = Nunito({
 
 export const metadata: Metadata = {
   title: {
-    default: "Psicóloga | Terapia online en español",
-    template: "%s | Terapia online",
+    default: "Bertha Cecilia Upegui — Psicóloga Terapeuta | Terapia online en español",
+    template: "%s | Bertha Cecilia Upegui, Psicóloga",
   },
   description:
-    "Terapia online para adultos, jóvenes, niños, parejas y familias de habla hispana, en cualquier parte del mundo.",
+    "Bertha Cecilia Upegui, psicóloga terapeuta. Terapia online para adultos, jóvenes, niños, parejas y familias de habla hispana, en cualquier parte del mundo.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

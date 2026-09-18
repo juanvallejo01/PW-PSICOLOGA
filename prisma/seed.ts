@@ -26,11 +26,12 @@ async function main() {
     update: {},
     create: {
       id: 1,
-      siteName: "Psicóloga | Terapia Online",
-      logoText: "Psic.",
+      siteName: "Bertha Cecilia Upegui",
+      logoText: "Bertha Upegui",
       heroTitle: "Pedir ayuda no es debilidad. No estás mal por sentir lo que sientes.",
       heroSubtitle:
         "Terapia online para adultos, jóvenes, niños, parejas y familias de habla hispana, en cualquier parte del mundo.",
+      heroImageUrl: "/bertha.jpeg",
       heroCtaPrimaryText: "Reservar mi primera sesión",
       heroCtaSecondaryText: "Conocé cómo trabajo",
       bookingMode: "whatsapp",
@@ -52,11 +53,39 @@ async function main() {
       id: 1,
       title: "Psicóloga Terapeuta",
       yearsExperience: 16,
+      photoUrl: "/bertha.jpeg",
       bioHtml:
-        "<p>Soy psicóloga con 16 años de experiencia acompañando procesos de cambio y bienestar emocional. Elegí esta profesión porque creo profundamente en el poder de ser escuchado sin juicio, y en que cada persona tiene los recursos para atravesar lo que le toca vivir, cuando encuentra el acompañamiento adecuado.</p><p>Hoy atiendo de forma 100% online, para poder acompañar a personas de habla hispana en cualquier parte del mundo.</p>",
+        "<p>Soy psicóloga con 16 años de experiencia acompañando procesos de cambio y bienestar emocional. Elegí esta profesión porque creo profundamente en el poder de ser escuchado sin juicio, y en que cada persona tiene los recursos para atravesar lo que le toca vivir, cuando encuentra el acompañamiento adecuado.</p><p>Hoy atiendo de forma 100% online, para poder acompañar a personas de habla hispana en cualquier parte del mundo.</p><p>Además de mi consulta, soy co-fundadora de la Fundación Proyecto Bambú, un espacio de liderazgo comunitario y bienestar emocional enfocado en mujeres migrantes. Ese trabajo me ha acercado de cerca a temas como la migración, la inclusión y el acompañamiento a familias con hijos neurodivergentes, que también forman parte de lo que trabajo en consulta.</p>",
       closingQuote: "Pedir ayuda no es debilidad. No estás mal por sentir lo que sientes.",
     },
   });
+
+  // ---------- Redes sociales ----------
+  const socialCount = await prisma.socialLink.count();
+  if (socialCount === 0) {
+    await prisma.socialLink.createMany({
+      data: [
+        {
+          platform: "instagram",
+          url: "https://www.instagram.com/psic.berthaupegui/",
+          visible: true,
+          order: 0,
+        },
+        {
+          platform: "facebook",
+          url: "https://www.facebook.com/bertha.cecilia.upegui",
+          visible: true,
+          order: 1,
+        },
+        {
+          platform: "linkedin",
+          url: "https://www.linkedin.com/in/bertha-cecilia-upegui-galofre-578116a3/",
+          visible: true,
+          order: 2,
+        },
+      ],
+    });
+  }
 
   const educationCount = await prisma.educationItem.count();
   if (educationCount === 0) {
@@ -111,6 +140,7 @@ async function main() {
         "Cansancio emocional / sobrecarga",
         "Soledad y conexión",
         "Fortalecimiento de recursos personales",
+        "Neurodivergencia: acompañamiento a familias",
       ].map((title, order) => ({ title, order })),
     });
   }
@@ -172,7 +202,8 @@ async function main() {
         },
         {
           name: "Taller de Inteligencia Emocional",
-          description: "Pendiente descripción final.",
+          description:
+            "Taller grupal para aprender a identificar, comprender y gestionar tus emociones, con herramientas prácticas para el día a día. Ideal para quienes buscan bienestar emocional más allá de la terapia individual.",
           duration: "",
           price: null,
           order: 2,
