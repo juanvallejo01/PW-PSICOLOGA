@@ -13,6 +13,10 @@ import {
 } from "@/lib/content";
 import { Container, SectionHeading, ButtonLink, Card } from "@/components/ui";
 import { Icon, type IconName } from "@/components/icon";
+import { AnimatedCharacter } from "@/components/animated-character";
+import { EmotionPicker } from "@/components/emotion-picker";
+import { Flower } from "@/components/flower";
+import { Reveal } from "@/components/reveal";
 
 const AUDIENCE_ICON: IconName[] = ["child", "teen", "adult", "couple", "family"];
 const ACCENT_ROTATION = [
@@ -43,18 +47,19 @@ export default async function HomePage() {
       <section className="relative overflow-hidden bg-gradient-to-b from-lilac-100 via-purple-50 to-white">
         <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-aqua-100 blur-3xl opacity-60 animate-float-slow" />
         <div className="absolute -bottom-32 -left-24 w-96 h-96 rounded-full bg-pink-100 blur-3xl opacity-60 animate-float-slow [animation-delay:2s]" />
-        <Container className="relative py-20 sm:py-28 grid lg:grid-cols-2 gap-12 items-center">
-          <div className="animate-fade-up">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/80 border border-purple-200 shadow-sm px-4 py-1.5 mb-6">
+        <Flower className="-left-28 top-6 w-[26rem] text-white/70" variant="round" heart="var(--color-purple-100)" />
+        <Container className="relative pt-8 pb-14 sm:py-20 grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] gap-6 lg:gap-12 items-center">
+          <div className="animate-fade-up text-center lg:text-left">
+            <div className="inline-flex flex-wrap justify-center items-center gap-x-2 gap-y-0.5 rounded-full bg-white/80 border border-purple-200 shadow-sm px-4 py-1.5 mb-6">
               <span className="w-2 h-2 rounded-full bg-aqua-500" />
               <span className="text-sm font-semibold text-purple-700">{settings.siteName}</span>
               <span className="text-sm text-ink-500">· {about.title}</span>
             </div>
-            <h1 className="font-display text-3xl sm:text-5xl font-semibold text-ink-900 leading-tight">
+            <h1 className="font-display text-3xl sm:text-4xl lg:text-[2.8rem] font-semibold text-ink-900 leading-[1.15]">
               {settings.heroTitle}
             </h1>
-            <p className="mt-6 text-lg text-ink-700 leading-relaxed max-w-xl">{settings.heroSubtitle}</p>
-            <div className="mt-8 flex flex-wrap gap-4">
+            <p className="mt-5 text-lg text-ink-700 leading-relaxed max-w-xl mx-auto lg:mx-0">{settings.heroSubtitle}</p>
+            <div className="mt-8 flex flex-wrap justify-center lg:justify-start gap-4">
               <ButtonLink href={primaryHref} external={isWhatsapp} variant="primary">
                 {settings.heroCtaPrimaryText}
                 <Icon name="arrow-right" className="w-4 h-4" />
@@ -63,25 +68,44 @@ export default async function HomePage() {
                 {settings.heroCtaSecondaryText}
               </ButtonLink>
             </div>
+            <ul className="mt-8 flex flex-wrap justify-center lg:justify-start gap-2.5 text-sm font-medium text-purple-700">
+              {[
+                { icon: "compass", label: "100% online" },
+                { icon: "heart", label: "En español" },
+                { icon: "leaf", label: "A tu ritmo" },
+              ].map((chip) => (
+                <li key={chip.label} className="inline-flex items-center gap-2 rounded-full bg-white/80 border border-purple-100 px-3.5 py-1.5">
+                  <Icon name={chip.icon as IconName} className="w-4 h-4 text-aqua-600" />
+                  {chip.label}
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="relative aspect-square max-w-md mx-auto w-full animate-fade-up [animation-delay:150ms]">
-            <div className="absolute inset-0 rounded-[2.5rem] bg-white shadow-xl overflow-hidden border border-purple-100">
-              {settings.heroImageUrl ? (
-                <Image
-                  src={settings.heroImageUrl}
-                  alt={settings.siteName}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 90vw, 480px"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-100 via-lilac-100 to-aqua-100">
-                  <Icon name="sun" className="w-24 h-24 text-purple-300" />
-                </div>
-              )}
+
+          {/* Escenario del personaje */}
+          <div className="relative order-first lg:order-none mx-auto w-full max-w-[17rem] sm:max-w-[22rem] lg:max-w-[26rem] aspect-[1/1.05] animate-fade-up [animation-delay:150ms]">
+            <div className="absolute inset-[4%] rounded-full bg-gradient-to-br from-white via-purple-100 to-aqua-100 shadow-xl shadow-purple-200/50" />
+            <Flower className="-right-6 -top-6 w-36 text-white/90" heart="var(--color-pink-300)" />
+            <Flower className="-left-2 bottom-8 w-20 text-white/80" variant="round" heart="var(--color-aqua-300)" />
+            <div className="absolute inset-0 flex items-end justify-center pb-[4%]">
+              <AnimatedCharacter
+                character="wave"
+                inline
+                shadow
+                preload
+                position={{ width: 300 }}
+                entranceAnimation="rise"
+                scrollAnimation="hop"
+                interaction={["hover", "cursor-tilt"]}
+                delay={300}
+                visibleFrom="always"
+              />
+            </div>
+            <div className="bubble absolute -left-[2%] top-[4%] rounded-2xl rounded-bl-sm bg-white px-4 py-2 shadow-lg shadow-purple-200/60 border border-purple-100">
+              <p className="font-display text-base font-semibold text-purple-700">¡Hola! Qué bueno verte</p>
             </div>
             {about.yearsExperience > 0 && (
-              <div className="absolute -bottom-5 -left-5 rounded-2xl bg-white shadow-lg shadow-purple-200/60 border border-purple-100 px-5 py-3.5">
+              <div className="absolute -bottom-3 right-0 sm:-right-3 rounded-2xl bg-white shadow-lg shadow-purple-200/60 border border-purple-100 px-5 py-3.5">
                 <p className="font-display text-2xl font-bold text-purple-600 leading-none">
                   {about.yearsExperience}+
                 </p>
@@ -92,31 +116,37 @@ export default async function HomePage() {
         </Container>
       </section>
 
+      {/* ¿CÓMO TE SIENTES HOY? */}
+      <section className="relative overflow-hidden py-16 sm:py-24">
+        <Flower className="-right-52 top-1/2 -translate-y-1/2 w-[30rem] text-purple-100/80" heart="var(--color-lilac-100)" />
+        <Container className="relative">
+          <EmotionPicker ctaHref={primaryHref} ctaExternal={isWhatsapp} />
+        </Container>
+      </section>
+
       {/* A QUIÉN ATIENDO */}
       {audience.length > 0 && (
-        <section className="py-20">
-          <Container>
-            <SectionHeading
-              eyebrow="A quién atiendo"
-              title="Un espacio para cada etapa de la vida"
-              subtitle="Atención 100% online, para hispanohablantes en cualquier parte del mundo."
-              center
-            />
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
+        <section className="relative overflow-hidden py-16 sm:py-20 bg-purple-50/60">
+          <Flower className="-left-32 -bottom-40 w-[28rem] text-lilac-100" variant="round" heart="var(--color-pink-100)" />
+          <Container className="relative">
+            <SectionHeading eyebrow="A quién atiendo" title="Un espacio para cada etapa de la vida" center />
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5">
               {audience.map((group, i) => {
                 const accent = ACCENT_ROTATION[i % ACCENT_ROTATION.length];
                 return (
-                  <Card key={group.id} className="text-center">
-                    <div
-                      className={`w-12 h-12 mx-auto rounded-full ${accent.bg} ${accent.text} flex items-center justify-center mb-4`}
-                    >
-                      <Icon name={AUDIENCE_ICON[i % AUDIENCE_ICON.length]} className="w-6 h-6" />
-                    </div>
-                    <p className="font-semibold text-ink-900">{group.name}</p>
-                    {group.description && (
-                      <p className="text-sm text-ink-500 mt-1">{group.description}</p>
-                    )}
-                  </Card>
+                  <Reveal key={group.id} delay={i * 70} className="h-full">
+                    <Card className="h-full text-center !p-5">
+                      <div
+                        className={`w-14 h-14 mx-auto rounded-full ${accent.bg} ${accent.text} flex items-center justify-center mb-3`}
+                      >
+                        <Icon name={AUDIENCE_ICON[i % AUDIENCE_ICON.length]} className="w-7 h-7" />
+                      </div>
+                      <p className="font-semibold text-ink-900">{group.name}</p>
+                      {group.description && (
+                        <p className="text-sm text-ink-500 mt-1 line-clamp-2">{group.description}</p>
+                      )}
+                    </Card>
+                  </Reveal>
                 );
               })}
             </div>
@@ -126,30 +156,34 @@ export default async function HomePage() {
 
       {/* TEMAS Y ESPECIALIDADES */}
       {specialties.length > 0 && (
-        <section className="py-20 bg-purple-50/60">
-          <Container>
-            <SectionHeading
-              eyebrow="Temas y especialidades"
-              title="En qué puedo acompañarte"
-              center
-            />
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <section className="relative overflow-hidden py-16 sm:py-24">
+          <Flower className="-left-44 -top-32 w-[24rem] text-aqua-100" heart="var(--color-purple-100)" />
+          <AnimatedCharacter
+            character="scared"
+            position={{ top: "3rem", right: "clamp(1rem, 5vw, 6rem)", width: 118 }}
+            entranceAnimation="from-right"
+            scrollAnimation="shiver"
+            interaction={["cursor-tilt"]}
+            visibleFrom="lg"
+          />
+          <Container className="relative">
+            <SectionHeading eyebrow="Temas y especialidades" title="En qué puedo acompañarte" center />
+            <div className="flex flex-wrap justify-center gap-3">
               {specialties.map((s, i) => {
                 const accent = ACCENT_ROTATION[i % ACCENT_ROTATION.length];
                 return (
-                  <div
-                    key={s.id}
-                    className="flex items-center gap-3 rounded-xl bg-white border border-purple-100 px-4 py-3.5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:shadow-purple-100 hover:border-purple-200"
-                  >
-                    <span className={`w-2.5 h-2.5 rounded-full ${accent.dot} shrink-0`} />
-                    <span className="text-ink-700 text-sm">{s.title}</span>
-                  </div>
+                  <Reveal key={s.id} delay={(i % 6) * 60}>
+                    <span className="inline-flex items-center gap-2.5 rounded-full bg-white border border-purple-100 px-5 py-3 text-sm text-ink-700 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:shadow-purple-100 hover:border-purple-200">
+                      <span className={`w-2.5 h-2.5 rounded-full ${accent.dot} shrink-0`} />
+                      {s.title}
+                    </span>
+                  </Reveal>
                 );
               })}
             </div>
-            <p className="text-sm text-ink-500 mt-6 max-w-2xl">
-              Si tu proceso requiere valoración psiquiátrica, te acompaño derivándote con un
-              profesional médico para que recibas la atención más adecuada.
+            <p className="mt-10 mx-auto max-w-xl flex items-start gap-3 rounded-2xl bg-aqua-100/70 px-5 py-4 text-sm text-ink-700">
+              <Icon name="heart" className="w-5 h-5 text-aqua-600 shrink-0 mt-0.5" />
+              Si tu proceso lo requiere, te acompaño derivándote con un profesional médico.
             </p>
           </Container>
         </section>
@@ -157,14 +191,24 @@ export default async function HomePage() {
 
       {/* CÓMO TRABAJO (teaser) */}
       {steps.length > 0 && (
-        <section className="py-20">
-          <Container className="grid lg:grid-cols-2 gap-14 items-center">
-            <div>
+        <section className="relative overflow-hidden py-16 sm:py-24 bg-purple-50/60">
+          <Flower className="-left-36 -top-32 w-[30rem] text-lilac-100" heart="var(--color-aqua-100)" />
+          <Container className="relative grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            <div className="text-center lg:text-left">
               <SectionHeading eyebrow="Cómo trabajo" title="Cada proceso es diferente" />
-              <p className="text-ink-500 leading-relaxed mb-6">
-                No existen fórmulas iguales para todos. Diseño cada acompañamiento según tu
-                historia, tu momento de vida y tus objetivos.
-              </p>
+              <div className="relative mx-auto lg:mx-0 w-52 mb-8 hidden sm:block">
+                <div className="absolute inset-x-2 bottom-0 top-8 rounded-full bg-gradient-to-br from-purple-100 to-aqua-100" />
+                <AnimatedCharacter
+                  character="think"
+                  inline
+                  shadow
+                  position={{ width: 150 }}
+                  entranceAnimation="rise"
+                  scrollAnimation="tilt"
+                  interaction={["hover", "cursor-tilt"]}
+                  visibleFrom="always"
+                />
+              </div>
               <ButtonLink href="/como-trabajo" variant="ghost">
                 Conocer el proceso completo
                 <Icon name="arrow-right" className="w-4 h-4" />
@@ -173,18 +217,17 @@ export default async function HomePage() {
             <ol className="relative space-y-4">
               <span
                 aria-hidden
-                className="absolute left-4 top-4 bottom-4 w-px bg-gradient-to-b from-aqua-300 via-purple-200 to-transparent"
+                className="absolute left-[1.35rem] top-6 bottom-6 w-px bg-gradient-to-b from-aqua-300 via-purple-200 to-transparent"
               />
               {steps.slice(0, 5).map((step, i) => (
-                <li key={step.id} className="relative flex gap-4 items-start">
-                  <span className="w-8 h-8 shrink-0 rounded-full bg-gradient-to-br from-aqua-400 to-aqua-600 text-white text-sm font-semibold flex items-center justify-center shadow-sm shadow-aqua-300/50 ring-4 ring-white">
-                    {i + 1}
-                  </span>
-                  <div>
+                <Reveal key={step.id} delay={i * 90}>
+                  <li className="relative flex gap-4 items-center rounded-2xl bg-white border border-purple-100 px-4 py-3.5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:shadow-purple-100">
+                    <span className="w-11 h-11 shrink-0 rounded-full bg-gradient-to-br from-aqua-400 to-aqua-600 text-white text-base font-semibold flex items-center justify-center shadow-sm shadow-aqua-300/50">
+                      {i + 1}
+                    </span>
                     <p className="font-semibold text-ink-900">{step.title}</p>
-                    {step.description && <p className="text-sm text-ink-500">{step.description}</p>}
-                  </div>
-                </li>
+                  </li>
+                </Reveal>
               ))}
             </ol>
           </Container>
@@ -192,16 +235,23 @@ export default async function HomePage() {
       )}
 
       {/* CTA banda */}
-      <section className="relative overflow-hidden py-16 bg-gradient-to-r from-purple-500 to-aqua-500">
+      <section className="relative overflow-hidden py-14 sm:py-16 bg-gradient-to-r from-purple-500 to-aqua-500">
         <div className="absolute -top-16 -right-10 w-64 h-64 rounded-full bg-white/10 blur-2xl animate-float-slow" />
         <div className="absolute -bottom-20 left-10 w-64 h-64 rounded-full bg-white/10 blur-2xl animate-float-slow [animation-delay:2.5s]" />
-        <Container className="relative text-center">
+        <Flower className="-left-20 -top-24 w-80 text-white/15" heart="rgb(255 255 255 / 0.12)" />
+        <AnimatedCharacter
+          character="wave"
+          position={{ right: "clamp(0.5rem, 5vw, 7rem)", bottom: "0", width: 170 }}
+          entranceAnimation="from-right"
+          scrollAnimation="hop"
+          interaction={["hover", "cursor-tilt"]}
+          delay={150}
+          visibleFrom="lg"
+        />
+        <Container className="relative text-center lg:pr-40">
           <h2 className="font-display text-2xl sm:text-3xl font-semibold text-white">
             Dar el primer paso también es parte del proceso
           </h2>
-          <p className="text-purple-50 mt-3 max-w-xl mx-auto">
-            Agenda tu primera sesión y empecemos a trabajar juntas en lo que necesitas hoy.
-          </p>
           <div className="mt-7">
             <ButtonLink
               href={primaryHref}
@@ -217,18 +267,21 @@ export default async function HomePage() {
 
       {/* TESTIMONIOS */}
       {testimonials.length > 0 && (
-        <section className="py-20">
-          <Container>
+        <section className="relative overflow-hidden py-16 sm:py-24">
+          <Flower className="-right-32 -bottom-40 w-[28rem] text-pink-100" variant="round" heart="var(--color-purple-100)" />
+          <Container className="relative">
             <SectionHeading eyebrow="Testimonios" title="Lo que dicen quienes ya hicieron su proceso" center />
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {testimonials.map((t, i) => {
                 const accent = ACCENT_ROTATION[i % ACCENT_ROTATION.length];
                 return (
-                  <Card key={t.id} className={`border-t-4 ${accent.border}`}>
-                    <Icon name="quote" className={`w-7 h-7 ${accent.text} mb-3`} />
-                    <p className="text-ink-700 italic leading-relaxed">&ldquo;{t.quote}&rdquo;</p>
-                    <p className="text-sm text-ink-500 mt-4 font-medium">— {t.authorInitials}</p>
-                  </Card>
+                  <Reveal key={t.id} delay={i * 90} className="h-full">
+                    <Card className={`h-full border-t-4 ${accent.border}`}>
+                      <Icon name="quote" className={`w-7 h-7 ${accent.text} mb-3`} />
+                      <p className="text-ink-700 italic leading-relaxed line-clamp-6">&ldquo;{t.quote}&rdquo;</p>
+                      <p className="text-sm text-ink-500 mt-4 font-medium">— {t.authorInitials}</p>
+                    </Card>
+                  </Reveal>
                 );
               })}
             </div>
@@ -238,8 +291,9 @@ export default async function HomePage() {
 
       {/* BLOG preview */}
       {posts.length > 0 && (
-        <section className="py-20 bg-purple-50/60">
-          <Container>
+        <section className="relative overflow-hidden py-16 sm:py-20 bg-purple-50/60">
+          <Flower className="-left-28 -top-28 w-[24rem] text-lilac-100" heart="var(--color-aqua-100)" />
+          <Container className="relative">
             <SectionHeading eyebrow="Blog" title="Reflexiones recientes" />
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {posts.slice(0, 3).map((post) => (
@@ -264,8 +318,9 @@ export default async function HomePage() {
 
       {/* FAQ preview */}
       {faqs.length > 0 && (
-        <section className="py-20">
-          <Container className="max-w-3xl">
+        <section className="relative overflow-hidden py-16 sm:py-24">
+          <Flower className="-right-32 -top-24 w-[26rem] text-aqua-100" heart="var(--color-pink-100)" />
+          <Container className="relative max-w-3xl">
             <SectionHeading eyebrow="Preguntas frecuentes" title="Resolvemos tus dudas" center />
             <div className="space-y-3">
               {faqs.slice(0, 5).map((faq) => (

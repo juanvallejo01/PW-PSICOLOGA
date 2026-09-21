@@ -33,6 +33,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${poppins.variable} ${nunito.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <noscript>
+          <style>{`.reveal{opacity:1!important;transform:none!important}.char__enter{opacity:1!important}`}</style>
+        </noscript>
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />

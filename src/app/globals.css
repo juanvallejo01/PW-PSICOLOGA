@@ -134,3 +134,385 @@ h1, h2, h3, h4, .font-display {
     animation: none;
   }
 }
+
+/* ───────────────────────── Personajes animados (AnimatedCharacter) ─────────────────────────
+   Capas anidadas, cada una anima UNA sola cosa para que los transforms no se pisen:
+   root (posición) › enter (entrada) › react (reacción de scroll) › float (flotación)
+   › tilt (cursor) › art (espejo) › img.
+   Solo se animan transform y opacity. */
+
+.char {
+  --c-k: 1; /* escala por breakpoint */
+  position: absolute;
+  z-index: 2;
+  display: none;
+  width: calc(var(--c-w) * var(--c-k));
+  top: var(--c-top, auto);
+  right: var(--c-right, auto);
+  bottom: var(--c-bottom, auto);
+  left: var(--c-left, auto);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.char[data-from="always"] {
+  display: block;
+}
+@media (min-width: 640px) {
+  .char[data-from="sm"] {
+    display: block;
+  }
+}
+@media (min-width: 768px) {
+  .char[data-from="md"] {
+    display: block;
+  }
+}
+@media (min-width: 1024px) {
+  .char[data-from="lg"] {
+    display: block;
+  }
+}
+@media (max-width: 1023px) {
+  .char {
+    --c-k: 0.82;
+  }
+}
+@media (max-width: 639px) {
+  .char {
+    --c-k: 0.64;
+  }
+}
+
+.char__enter,
+.char__react,
+.char__float,
+.char__tilt,
+.char__art {
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 100%; /* los pies quedan apoyados */
+}
+.char__art {
+  position: relative;
+}
+/* Modo en flujo: ocupa su sitio (hero / ilustraciones grandes) en vez de posicionarse en absoluto. */
+.char[data-inline] {
+  position: relative;
+  z-index: auto;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  max-width: 100%;
+  margin-inline: auto;
+}
+/* Sombra suave en el suelo: vive en la raíz (no flota) para que al saltar/flotar se note el despegue. */
+.char[data-shadow]::after {
+  content: "";
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  bottom: -2%;
+  height: 7%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(80 54 135 / 0.22), transparent);
+  z-index: -1;
+}
+.char__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+}
+.char[data-hover] .char__art {
+  pointer-events: auto;
+}
+
+/* Entrada: invisible hasta que el observer marca data-state="in". --dir = ±1 según el sentido del scroll. */
+.char__enter {
+  opacity: 0;
+}
+.char[data-state="in"] .char__enter {
+  animation: char-rise 0.95s cubic-bezier(0.22, 1, 0.36, 1) var(--c-delay, 0ms) both;
+}
+.char[data-state="in"][data-entrance="from-left"] .char__enter {
+  animation-name: char-from-left;
+}
+.char[data-state="in"][data-entrance="from-right"] .char__enter {
+  animation-name: char-from-right;
+}
+.char[data-state="in"][data-entrance="fade"] .char__enter {
+  animation-name: char-fade;
+  animation-duration: 0.6s;
+}
+
+@keyframes char-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(calc(var(--dir, 1) * 30px)) scale(0.96);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(calc(var(--dir, 1) * -6px)) scale(1.02);
+  }
+  78% {
+    transform: translateY(calc(var(--dir, 1) * 2px)) scale(0.995);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes char-from-left {
+  0% {
+    opacity: 0;
+    transform: translateX(-36px) translateY(calc(var(--dir, 1) * 10px)) scale(0.96);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(5px) scale(1.02);
+  }
+  80% {
+    transform: translateX(-2px) scale(0.995);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes char-from-right {
+  0% {
+    opacity: 0;
+    transform: translateX(36px) translateY(calc(var(--dir, 1) * 10px)) scale(0.96);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(-5px) scale(1.02);
+  }
+  80% {
+    transform: translateX(2px) scale(0.995);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes char-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Reacción al llegar a la sección (una vez, con enfriamiento). La dirección invierte inclinaciones y desplazamientos. */
+.char__react[data-react="hop"] {
+  animation: char-react-hop 0.8s ease-out both;
+}
+.char__react[data-react="tilt"] {
+  animation: char-react-tilt 0.95s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+}
+.char__react[data-react="nudge"] {
+  animation: char-react-nudge 0.95s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.char__react[data-react="shiver"] {
+  animation: char-react-shiver 0.7s ease-in-out both;
+}
+
+@keyframes char-react-hop {
+  0%,
+  100% {
+    transform: none;
+  }
+  35% {
+    transform: translateY(-12px) scale(0.99, 1.02);
+  }
+  65% {
+    transform: translateY(0) scale(1.02, 0.975);
+  }
+  82% {
+    transform: translateY(-3px) scale(1);
+  }
+}
+@keyframes char-react-tilt {
+  0%,
+  100% {
+    transform: none;
+  }
+  35% {
+    transform: rotate(calc(var(--dir, 1) * -6deg));
+  }
+  70% {
+    transform: rotate(calc(var(--dir, 1) * 2.5deg));
+  }
+}
+@keyframes char-react-nudge {
+  0%,
+  100% {
+    transform: none;
+  }
+  40% {
+    transform: translateX(calc(var(--dir, 1) * 10px)) rotate(calc(var(--dir, 1) * 2.5deg));
+  }
+}
+@keyframes char-react-shiver {
+  0%,
+  100% {
+    transform: none;
+  }
+  12%,
+  36%,
+  60%,
+  84% {
+    transform: rotate(-1.6deg) translateX(-1px);
+  }
+  24%,
+  48%,
+  72% {
+    transform: rotate(1.6deg) translateX(1px);
+  }
+}
+
+/* Flotación: solo hacia arriba (0 → -amp → 0) para que los pies nunca se hundan; pausada fuera de pantalla. */
+.char__float[data-float] {
+  animation: char-float 6.5s ease-in-out var(--c-phase, 0ms) infinite;
+  animation-play-state: paused;
+}
+.char[data-visible="true"] .char__float[data-float] {
+  animation-play-state: running;
+  will-change: transform;
+}
+@keyframes char-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(var(--c-float, -6px));
+  }
+}
+
+/* Inclinación muy leve siguiendo el cursor (--tx/--ty en -1…1 los fija el componente). */
+.char__tilt {
+  transform: translate(calc(var(--tx, 0) * 4px), calc(var(--ty, 0) * 2px)) rotate(calc(var(--tx, 0) * 3deg));
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Movimiento reducido: sin flotación, reacciones, saludo ni inclinación; la entrada queda en un fundido corto. */
+@media (prefers-reduced-motion: reduce) {
+  .char[data-state="in"] .char__enter {
+    animation: char-fade 0.4s ease both !important;
+    animation-delay: 0ms !important;
+  }
+  .char__react,
+  .char__float {
+    animation: none !important;
+  }
+  .char__tilt {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ───────────────────────── Flor de fondo ─────────────────────────
+   Decoración muy sutil: baja opacidad, gira casi imperceptible. La opacidad va en el <svg> entero. */
+.flower {
+  opacity: 0.55;
+  transform-origin: 50% 50%;
+}
+.flower--spin {
+  animation: flower-spin 120s linear infinite;
+}
+@keyframes flower-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ───────────────────────── Aparición al hacer scroll (Reveal) ───────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+}
+.reveal[data-in="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ───────────────────────── Selector de emociones ───────────────────────── */
+.emotion-pop {
+  animation: emotion-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes emotion-pop {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.86) rotate(-3deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.emotion-text {
+  animation: emotion-text 0.45s ease-out both;
+}
+@keyframes emotion-text {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Globo de diálogo del hero */
+.bubble {
+  animation: bubble-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.1s both;
+  transform-origin: 20% 100%;
+}
+@keyframes bubble-in {
+  from {
+    opacity: 0;
+    transform: scale(0.5) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* «Leer más»: recorta el texto largo con un degradado; el botón lo expande. */
+.clamp-fade[data-collapsed="true"] {
+  max-height: var(--clamp-h, 15rem);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flower--spin,
+  .bubble,
+  .emotion-pop,
+  .emotion-text {
+    animation: none;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+@media print {
+  .char {
+    display: none !important;
+  }
+}

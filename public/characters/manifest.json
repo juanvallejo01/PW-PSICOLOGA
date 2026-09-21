@@ -1,0 +1,26 @@
+{
+  "wave": {
+    "width": 440,
+    "height": 518
+  },
+  "think": {
+    "width": 608,
+    "height": 874
+  },
+  "angry": {
+    "width": 569,
+    "height": 887
+  },
+  "scared": {
+    "width": 486,
+    "height": 678
+  },
+  "sad": {
+    "width": 570,
+    "height": 878
+  },
+  "sit": {
+    "width": 403,
+    "height": 511
+  }
+}
