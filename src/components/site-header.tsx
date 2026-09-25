@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getSiteSettings, buildWhatsappUrl } from "@/lib/content";
 import { MobileMenu } from "@/components/mobile-menu";
 import { NAV_ITEMS } from "@/lib/nav";
@@ -12,14 +13,16 @@ export async function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-purple-100 relative">
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <span className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 via-purple-500 to-aqua-500 flex items-center justify-center text-white text-sm font-display font-bold shadow-sm shadow-purple-300/50 transition-transform group-hover:scale-105">
-            {settings.logoText.trim().charAt(0)}
-          </span>
-          <span className="font-display text-lg sm:text-xl font-semibold text-purple-700">
-            {settings.logoText}
-          </span>
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 h-16 sm:h-20 flex items-center justify-between">
+        <Link href="/" className="flex items-center group">
+          <Image
+            src="/brand/logo-horizontal.png"
+            alt={`${settings.siteName}, psicóloga`}
+            width={1401}
+            height={296}
+            loading="eager"
+            className="h-10 sm:h-12 w-auto transition-transform duration-200 group-hover:scale-[1.03]"
+          />
         </Link>
 
         <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-ink-700">

@@ -15,7 +15,7 @@ import { Container, SectionHeading, ButtonLink, Card } from "@/components/ui";
 import { Icon, type IconName } from "@/components/icon";
 import { AnimatedCharacter } from "@/components/animated-character";
 import { EmotionPicker } from "@/components/emotion-picker";
-import { Flower } from "@/components/flower";
+import { Pattern } from "@/components/pattern";
 import { Reveal } from "@/components/reveal";
 
 const AUDIENCE_ICON: IconName[] = ["child", "teen", "adult", "couple", "family"];
@@ -40,14 +40,15 @@ export default async function HomePage() {
   const whatsappHref = buildWhatsappUrl(settings.whatsappNumber, settings.whatsappMessageTemplate);
   const primaryHref = settings.bookingMode === "whatsapp" ? whatsappHref ?? "/contacto" : "/servicios#agenda";
   const isWhatsapp = settings.bookingMode === "whatsapp";
+  const aboutIntro = about.bioHtml.match(/<p>([\s\S]*?)<\/p>/)?.[1].replace(/<[^>]+>/g, "").trim();
 
   return (
     <>
       {/* HERO */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-lilac-100 via-purple-50 to-white">
+      <section className="relative overflow-hidden bg-gradient-to-b from-lilac-100 via-purple-50 to-background [mask-image:linear-gradient(to_bottom,#000_88%,transparent)]">
         <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-aqua-100 blur-3xl opacity-60 animate-float-slow" />
         <div className="absolute -bottom-32 -left-24 w-96 h-96 rounded-full bg-pink-100 blur-3xl opacity-60 animate-float-slow [animation-delay:2s]" />
-        <Flower className="-left-28 top-6 w-[26rem] text-white/70" variant="round" heart="var(--color-purple-100)" />
+        <Pattern />
         <Container className="relative pt-8 pb-14 sm:py-20 grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] gap-6 lg:gap-12 items-center">
           <div className="animate-fade-up text-center lg:text-left">
             <div className="inline-flex flex-wrap justify-center items-center gap-x-2 gap-y-0.5 rounded-full bg-white/80 border border-purple-200 shadow-sm px-4 py-1.5 mb-6">
@@ -85,8 +86,6 @@ export default async function HomePage() {
           {/* Escenario del personaje */}
           <div className="relative order-first lg:order-none mx-auto w-full max-w-[17rem] sm:max-w-[22rem] lg:max-w-[26rem] aspect-[1/1.05] animate-fade-up [animation-delay:150ms]">
             <div className="absolute inset-[4%] rounded-full bg-gradient-to-br from-white via-purple-100 to-aqua-100 shadow-xl shadow-purple-200/50" />
-            <Flower className="-right-6 -top-6 w-36 text-white/90" heart="var(--color-pink-300)" />
-            <Flower className="-left-2 bottom-8 w-20 text-white/80" variant="round" heart="var(--color-aqua-300)" />
             <div className="absolute inset-0 flex items-end justify-center pb-[4%]">
               <AnimatedCharacter
                 character="wave"
@@ -118,16 +117,48 @@ export default async function HomePage() {
 
       {/* ¿CÓMO TE SIENTES HOY? */}
       <section className="relative overflow-hidden py-16 sm:py-24">
-        <Flower className="-right-52 top-1/2 -translate-y-1/2 w-[30rem] text-purple-100/80" heart="var(--color-lilac-100)" />
+        <Pattern />
         <Container className="relative">
           <EmotionPicker ctaHref={primaryHref} ctaExternal={isWhatsapp} />
         </Container>
       </section>
 
+      {/* CONOCE A BERTHA */}
+      <section className="relative overflow-hidden py-16 sm:py-24 section-tint">
+        <Pattern />
+        <Container className="relative grid lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] gap-10 lg:gap-16 items-center">
+          <Reveal className="mx-auto w-full max-w-[18rem] lg:max-w-none">
+            <div className="relative">
+              <div className="absolute -inset-3 -rotate-3 rounded-[2rem] bg-gradient-to-br from-purple-200 via-lilac-100 to-aqua-100" />
+              <div className="relative aspect-[3/4] rounded-3xl overflow-hidden border-4 border-white shadow-xl shadow-purple-200/60">
+                <Image
+                  src="/bertha/bertha-11.jpg"
+                  alt={`${settings.siteName}, ${about.title.toLowerCase()}`}
+                  fill
+                  className="object-cover"
+                  sizes="(min-width: 1024px) 320px, 288px"
+                />
+              </div>
+            </div>
+          </Reveal>
+          <Reveal delay={120} className="text-center lg:text-left">
+            <SectionHeading eyebrow="Sobre mí" title={`Hola, soy ${settings.siteName}`} />
+            <p className="-mt-6 mb-4 font-medium text-purple-600">{about.title}</p>
+            {aboutIntro && <p className="text-ink-700 text-lg leading-relaxed max-w-xl mx-auto lg:mx-0">{aboutIntro}</p>}
+            <div className="mt-8">
+              <ButtonLink href="/sobre-mi" variant="ghost">
+                Conocer mi historia
+                <Icon name="arrow-right" className="w-4 h-4" />
+              </ButtonLink>
+            </div>
+          </Reveal>
+        </Container>
+      </section>
+
       {/* A QUIÉN ATIENDO */}
       {audience.length > 0 && (
-        <section className="relative overflow-hidden py-16 sm:py-20 bg-purple-50/60">
-          <Flower className="-left-32 -bottom-40 w-[28rem] text-lilac-100" variant="round" heart="var(--color-pink-100)" />
+        <section className="relative overflow-hidden py-16 sm:py-20 section-tint">
+          <Pattern />
           <Container className="relative">
             <SectionHeading eyebrow="A quién atiendo" title="Un espacio para cada etapa de la vida" center />
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5">
@@ -157,7 +188,7 @@ export default async function HomePage() {
       {/* TEMAS Y ESPECIALIDADES */}
       {specialties.length > 0 && (
         <section className="relative overflow-hidden py-16 sm:py-24">
-          <Flower className="-left-44 -top-32 w-[24rem] text-aqua-100" heart="var(--color-purple-100)" />
+          <Pattern />
           <AnimatedCharacter
             character="scared"
             position={{ top: "3rem", right: "clamp(1rem, 5vw, 6rem)", width: 118 }}
@@ -191,8 +222,8 @@ export default async function HomePage() {
 
       {/* CÓMO TRABAJO (teaser) */}
       {steps.length > 0 && (
-        <section className="relative overflow-hidden py-16 sm:py-24 bg-purple-50/60">
-          <Flower className="-left-36 -top-32 w-[30rem] text-lilac-100" heart="var(--color-aqua-100)" />
+        <section className="relative overflow-hidden py-16 sm:py-24 section-tint">
+          <Pattern />
           <Container className="relative grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <div className="text-center lg:text-left">
               <SectionHeading eyebrow="Cómo trabajo" title="Cada proceso es diferente" />
@@ -235,10 +266,10 @@ export default async function HomePage() {
       )}
 
       {/* CTA banda */}
-      <section className="relative overflow-hidden py-14 sm:py-16 bg-gradient-to-r from-purple-500 to-aqua-500">
+      <section className="relative overflow-hidden py-20 sm:py-24 section-band">
+        <Pattern tone="white" />
         <div className="absolute -top-16 -right-10 w-64 h-64 rounded-full bg-white/10 blur-2xl animate-float-slow" />
         <div className="absolute -bottom-20 left-10 w-64 h-64 rounded-full bg-white/10 blur-2xl animate-float-slow [animation-delay:2.5s]" />
-        <Flower className="-left-20 -top-24 w-80 text-white/15" heart="rgb(255 255 255 / 0.12)" />
         <AnimatedCharacter
           character="wave"
           position={{ right: "clamp(0.5rem, 5vw, 7rem)", bottom: "0", width: 170 }}
@@ -268,7 +299,7 @@ export default async function HomePage() {
       {/* TESTIMONIOS */}
       {testimonials.length > 0 && (
         <section className="relative overflow-hidden py-16 sm:py-24">
-          <Flower className="-right-32 -bottom-40 w-[28rem] text-pink-100" variant="round" heart="var(--color-purple-100)" />
+          <Pattern />
           <Container className="relative">
             <SectionHeading eyebrow="Testimonios" title="Lo que dicen quienes ya hicieron su proceso" center />
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -291,8 +322,8 @@ export default async function HomePage() {
 
       {/* BLOG preview */}
       {posts.length > 0 && (
-        <section className="relative overflow-hidden py-16 sm:py-20 bg-purple-50/60">
-          <Flower className="-left-28 -top-28 w-[24rem] text-lilac-100" heart="var(--color-aqua-100)" />
+        <section className="relative overflow-hidden py-16 sm:py-20 section-tint">
+          <Pattern />
           <Container className="relative">
             <SectionHeading eyebrow="Blog" title="Reflexiones recientes" />
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -319,7 +350,7 @@ export default async function HomePage() {
       {/* FAQ preview */}
       {faqs.length > 0 && (
         <section className="relative overflow-hidden py-16 sm:py-24">
-          <Flower className="-right-32 -top-24 w-[26rem] text-aqua-100" heart="var(--color-pink-100)" />
+          <Pattern />
           <Container className="relative max-w-3xl">
             <SectionHeading eyebrow="Preguntas frecuentes" title="Resolvemos tus dudas" center />
             <div className="space-y-3">

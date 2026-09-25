@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getProcessSteps } from "@/lib/content";
 import { Container, SectionHeading, ButtonLink } from "@/components/ui";
 import { AnimatedCharacter } from "@/components/animated-character";
-import { Flower } from "@/components/flower";
+import { Pattern } from "@/components/pattern";
 import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = { title: "Cómo trabajo" };
@@ -12,8 +12,7 @@ export default async function ComoTrabajoPage() {
 
   return (
     <div className="relative overflow-hidden">
-      <Flower className="-right-40 -top-24 w-[28rem] text-lilac-100" heart="var(--color-aqua-100)" />
-      <Flower className="-left-36 bottom-24 w-[22rem] text-pink-100" variant="round" heart="var(--color-purple-100)" />
+      <Pattern />
         <Container className="relative py-16 sm:py-24 max-w-3xl">
           <SectionHeading
             eyebrow="Cómo trabajo"
@@ -47,7 +46,6 @@ export default async function ComoTrabajoPage() {
           </ol>
 
           <div className="relative mt-14 overflow-hidden rounded-2xl bg-aqua-100 p-8 text-center md:pr-40">
-            <Flower className="-left-10 -top-14 w-40 text-white/70" heart="var(--color-aqua-300)" />
             <AnimatedCharacter
               character="wave"
               position={{ right: "2rem", bottom: "0", width: 118 }}

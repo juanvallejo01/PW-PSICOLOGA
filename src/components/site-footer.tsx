@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getSiteSettings, getSocialLinks, getAboutContent, buildWhatsappUrl } from "@/lib/content";
 import { Icon, type IconName } from "@/components/icon";
 
@@ -22,16 +23,18 @@ export async function SiteFooter() {
       : "/servicios#agenda";
 
   return (
-    <footer className="mt-24 bg-gradient-to-br from-purple-700 via-purple-700 to-purple-800 text-purple-50">
+    <footer className="bg-gradient-to-br from-purple-700 via-purple-700 to-purple-800 text-purple-50">
       <div className="max-w-6xl mx-auto px-5 sm:px-8 py-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-8">
         <div>
-          <div className="flex items-center gap-2.5">
-            <span className="w-8 h-8 rounded-full bg-gradient-to-br from-aqua-300 to-aqua-500 flex items-center justify-center text-purple-900 text-sm font-display font-bold shrink-0">
-              {settings.siteName.trim().charAt(0)}
-            </span>
-            <p className="font-display text-lg font-semibold text-white">{settings.siteName}</p>
-          </div>
-          <p className="text-purple-200 text-sm mt-2">{about.title}</p>
+          {/* El logo es morado: se invierte a blanco para leerse sobre el fondo oscuro */}
+          <Image
+            src="/brand/logo-vertical.png"
+            alt={`${settings.siteName}, psicóloga`}
+            width={965}
+            height={514}
+            className="h-24 w-auto brightness-0 invert"
+          />
+          <p className="text-purple-200 text-sm mt-3">{about.title}</p>
           {(settings.phoneVisible && settings.phone) || settings.contactEmail ? (
             <div className="flex flex-wrap gap-x-5 gap-y-1 mt-3">
               {settings.phoneVisible && settings.phone && (

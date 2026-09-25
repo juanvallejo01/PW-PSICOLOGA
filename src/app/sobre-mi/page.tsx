@@ -4,7 +4,7 @@ import { getAboutContent, getEducationItems, getSiteSettings } from "@/lib/conte
 import { Container, SectionHeading } from "@/components/ui";
 import { Icon } from "@/components/icon";
 import { AnimatedCharacter } from "@/components/animated-character";
-import { Flower } from "@/components/flower";
+import { Pattern } from "@/components/pattern";
 import { ReadMore } from "@/components/read-more";
 
 export const metadata: Metadata = { title: "Sobre mí" };
@@ -20,8 +20,7 @@ export default async function SobreMiPage() {
 
   return (
     <div className="relative overflow-hidden">
-      <Flower className="-right-40 -top-28 w-[28rem] text-purple-100" heart="var(--color-lilac-100)" />
-      <Flower className="-left-32 bottom-16 w-[22rem] text-aqua-100" variant="round" heart="var(--color-pink-100)" />
+      <Pattern />
         <Container className="relative py-16 sm:py-24">
           <div className="grid lg:grid-cols-[320px_1fr] gap-12 items-start">
             <div className="lg:sticky lg:top-24 animate-fade-up">
@@ -102,12 +101,23 @@ export default async function SobreMiPage() {
                 </details>
               )}
 
-              {about.closingQuote && (
-                <div className="mt-12 relative rounded-2xl bg-gradient-to-br from-purple-50 to-aqua-50 border border-purple-100 pl-7 pr-6 py-6">
-                  <Icon name="quote" className="w-8 h-8 text-purple-300 absolute top-5 left-5 -translate-x-1/2 -translate-y-1/2 bg-white rounded-full p-1.5 shadow-sm" />
-                  <p className="font-display text-xl text-purple-700 leading-snug">{about.closingQuote}</p>
+              <div className="mt-12 grid sm:grid-cols-[13rem_minmax(0,1fr)] gap-6 items-center">
+                <div className="relative aspect-[3/4] w-full max-w-[13rem] mx-auto sm:mx-0 rounded-2xl overflow-hidden border-4 border-white shadow-lg shadow-purple-200/60">
+                  <Image
+                    src="/bertha/bertha-12.jpg"
+                    alt={`${settings.siteName} sonriendo, en su consulta`}
+                    fill
+                    className="object-cover object-[50%_65%]"
+                    sizes="208px"
+                  />
                 </div>
-              )}
+                {about.closingQuote && (
+                  <div className="relative rounded-2xl bg-gradient-to-br from-purple-50 to-aqua-50 border border-purple-100 pl-7 pr-6 py-6">
+                    <Icon name="quote" className="w-8 h-8 text-purple-300 absolute top-5 left-5 -translate-x-1/2 -translate-y-1/2 bg-white rounded-full p-1.5 shadow-sm" />
+                    <p className="font-display text-xl text-purple-700 leading-snug">{about.closingQuote}</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </Container>

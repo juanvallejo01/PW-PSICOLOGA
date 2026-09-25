@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { getSiteSettings, getSocialLinks, getFaqs, buildWhatsappUrl } from "@/lib/content";
-import { Container, SectionHeading, Card } from "@/components/ui";
+import { Container, SectionHeading, Card, ButtonLink } from "@/components/ui";
 import { Icon, type IconName } from "@/components/icon";
 import { AnimatedCharacter } from "@/components/animated-character";
-import { Flower } from "@/components/flower";
-import { submitContactForm } from "./actions";
+import { Pattern } from "@/components/pattern";
 
 export const metadata: Metadata = { title: "Contacto" };
 
@@ -16,8 +15,21 @@ const SOCIAL_ICON: Record<string, IconName> = {
   whatsapp: "whatsapp",
 };
 
-export default async function ContactoPage(props: PageProps<"/contacto">) {
-  const searchParams = await props.searchParams;
+/** "15485038505" → "+1 (548) 503-8505"; otros países quedan como "+<dígitos>". */
+function formatPhone(raw: string | null) {
+  const digits = raw?.replace(/\D/g, "");
+  if (!digits) return null;
+  const nanp = digits.match(/^1(\d{3})(\d{3})(\d{4})$/);
+  return nanp ? `+1 (${nanp[1]}) ${nanp[2]}-${nanp[3]}` : `+${digits}`;
+}
+
+const BOOKING_STEPS = [
+  "Toca el botón de WhatsApp",
+  "Se abre el chat con tu mensaje ya escrito, solo envíalo",
+  "Te respondo para acordar día y hora de tu sesión",
+];
+
+export default async function ContactoPage() {
   const [settings, social, faqs] = await Promise.all([
     getSiteSettings(),
     getSocialLinks(true),
@@ -25,20 +37,18 @@ export default async function ContactoPage(props: PageProps<"/contacto">) {
   ]);
 
   const whatsappHref = buildWhatsappUrl(settings.whatsappNumber, settings.whatsappMessageTemplate);
-  const submitted = searchParams.enviado === "1";
-  const hasError = searchParams.error === "1";
+  const whatsappNumber = formatPhone(settings.whatsappNumber);
 
   return (
     <div className="relative overflow-hidden">
-      <Flower className="-right-40 -top-32 w-[30rem] text-purple-100" heart="var(--color-lilac-100)" />
-      <Flower className="-left-32 -bottom-40 w-[24rem] text-aqua-100" variant="round" heart="var(--color-pink-100)" />
+      <Pattern />
         <Container className="relative py-16 sm:py-24">
           <div className="grid lg:grid-cols-2 gap-14">
             <div>
               <SectionHeading
                 eyebrow="Contacto"
                 title="Hablemos"
-                subtitle="Atención 100% online. Escríbeme y te respondo pronto."
+                subtitle="Atención 100% online. Agenda tu sesión en un minuto, directo por WhatsApp."
               />
 
               <div className="space-y-3 mb-8">
@@ -52,15 +62,60 @@ export default async function ContactoPage(props: PageProps<"/contacto">) {
                     <Icon name="mail" className="w-5 h-5 text-purple-500" /> {settings.contactEmail}
                   </p>
                 )}
-                {whatsappHref && (
-                  <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-ink-700 hover:text-aqua-600">
-                    <Icon name="whatsapp" className="w-5 h-5 text-aqua-500" /> Escribir por WhatsApp
-                  </a>
-                )}
+              </div>
+
+              <div className="relative">
+                <AnimatedCharacter
+                  character="wave"
+                  position={{ right: "1.5rem", bottom: "calc(100% - 6px)", width: 118 }}
+                  entranceAnimation="rise"
+                  scrollAnimation="hop"
+                  interaction={["hover", "cursor-tilt"]}
+                  delay={200}
+                  visibleFrom="md"
+                />
+                <Card className="!p-7">
+                  <div className="flex items-center gap-3">
+                    <span className="w-12 h-12 shrink-0 rounded-full bg-aqua-100 text-aqua-600 flex items-center justify-center">
+                      <Icon name="whatsapp" className="w-6 h-6" />
+                    </span>
+                    <div>
+                      <h2 className="font-display text-xl font-semibold text-ink-900 leading-tight">Agenda por WhatsApp</h2>
+                      {whatsappNumber && <p className="text-sm text-ink-500">{whatsappNumber}</p>}
+                    </div>
+                  </div>
+
+                  <ol className="mt-6 space-y-3">
+                    {BOOKING_STEPS.map((step, i) => (
+                      <li key={step} className="flex items-start gap-3 text-sm text-ink-700">
+                        <span className="w-6 h-6 shrink-0 rounded-full bg-purple-100 text-purple-600 text-xs font-semibold flex items-center justify-center">
+                          {i + 1}
+                        </span>
+                        <span className="pt-0.5">{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+
+                  {whatsappHref ? (
+                    <>
+                      <div className="mt-6 rounded-2xl rounded-tl-sm bg-aqua-100/70 px-4 py-3 text-sm text-ink-700">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-aqua-600 mb-1">Tu mensaje</p>
+                        {settings.whatsappMessageTemplate}
+                      </div>
+                      <ButtonLink href={whatsappHref} external variant="secondary" className="mt-6 w-full !py-3.5 !text-base">
+                        <Icon name="whatsapp" className="w-5 h-5" />
+                        Agendar por WhatsApp
+                      </ButtonLink>
+                    </>
+                  ) : (
+                    <p className="mt-6 text-sm text-ink-500">El agendamiento por WhatsApp estará disponible muy pronto.</p>
+                  )}
+                  {settings.scheduleText && <p className="mt-4 text-xs text-ink-500 text-center">{settings.scheduleText}</p>}
+                </Card>
               </div>
 
               {social.length > 0 && (
-                <div className="flex gap-3 mb-10">
+                <div className="flex gap-3 mt-8">
                   {social.map((s) => (
                     <a
                       key={s.id}
@@ -75,72 +130,6 @@ export default async function ContactoPage(props: PageProps<"/contacto">) {
                   ))}
                 </div>
               )}
-
-              <div className="relative">
-                <AnimatedCharacter
-                  character="wave"
-                  position={{ right: "1.5rem", bottom: "calc(100% - 6px)", width: 118 }}
-                  entranceAnimation="rise"
-                  scrollAnimation="hop"
-                  interaction={["hover", "cursor-tilt"]}
-                  delay={200}
-                  visibleFrom="md"
-                />
-                <Card>
-                  {submitted ? (
-                    <p className="text-aqua-600 font-medium flex items-center gap-2">
-                      <Icon name="check" className="w-5 h-5" /> ¡Gracias! Tu mensaje fue enviado, te voy a responder pronto.
-                    </p>
-                  ) : (
-                    <form action={submitContactForm} className="space-y-4">
-                      {hasError && (
-                        <p className="text-sm text-pink-500">Revisá los datos ingresados e intentá de nuevo.</p>
-                      )}
-                      <div>
-                        <label className="block text-sm font-medium text-ink-700 mb-1" htmlFor="name">
-                          Nombre
-                        </label>
-                        <input
-                          id="name"
-                          name="name"
-                          required
-                          className="w-full rounded-lg border border-purple-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-ink-700 mb-1" htmlFor="email">
-                          Email
-                        </label>
-                        <input
-                          id="email"
-                          type="email"
-                          name="email"
-                          required
-                          className="w-full rounded-lg border border-purple-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-ink-700 mb-1" htmlFor="message">
-                          Mensaje
-                        </label>
-                        <textarea
-                          id="message"
-                          name="message"
-                          required
-                          rows={4}
-                          className="w-full rounded-lg border border-purple-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        className="w-full rounded-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 text-sm transition-colors"
-                      >
-                        Enviar mensaje
-                      </button>
-                    </form>
-                  )}
-                </Card>
-              </div>
             </div>
 
             <div>

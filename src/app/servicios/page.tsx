@@ -9,7 +9,7 @@ import {
 import { Container, SectionHeading, ButtonLink, Card } from "@/components/ui";
 import { Icon } from "@/components/icon";
 import { AnimatedCharacter } from "@/components/animated-character";
-import { Flower } from "@/components/flower";
+import { Pattern } from "@/components/pattern";
 import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = { title: "Servicios" };
@@ -28,9 +28,7 @@ export default async function ServiciosPage() {
 
   return (
     <div className="relative overflow-hidden">
-      <Flower className="-right-40 -top-24 w-[28rem] text-lilac-100" heart="var(--color-aqua-100)" />
-      <Flower className="-left-36 top-[38rem] w-[22rem] text-aqua-100" variant="round" heart="var(--color-pink-100)" />
-      <Flower className="-right-32 bottom-10 w-[20rem] text-pink-100" heart="var(--color-purple-100)" />
+      <Pattern />
         <Container className="relative py-16 sm:py-24">
           <SectionHeading
             eyebrow="Servicios y modalidades"

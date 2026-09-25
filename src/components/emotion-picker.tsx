@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import { POSES, POSE_ALT, type PoseId } from "@/lib/characters";
-import { Flower } from "@/components/flower";
 
 interface Emotion {
   pose: PoseId;
@@ -17,7 +16,7 @@ const EMOTIONS: Emotion[] = [
   { pose: "scared", label: "Ansiedad", message: "Cuando la mente no para, se puede aprender a calmarla. No tienes que hacerlo sin apoyo." },
   { pose: "angry", label: "Enojo", message: "Detrás del enojo casi siempre hay algo que necesita ser escuchado." },
   { pose: "sit", label: "Cansancio", message: "Descansar y pedir apoyo también es avanzar. Vamos a tu ritmo." },
-  { pose: "think", label: "Confusión", message: "Si no sabes bien qué sientes, ordenarlo juntas es un buen primer paso." },
+  { pose: "think", label: "Confusión", message: "Si no sabes bien qué sientes, ordenarlo juntos es un buen primer paso." },
   { pose: "wave", label: "Estoy bien", message: "¡Qué bueno! La terapia también sirve para conocerte más y seguir creciendo." },
 ];
 
@@ -35,8 +34,6 @@ export function EmotionPicker({ ctaHref, ctaExternal }: { ctaHref: string; ctaEx
       {/* Escenario: la pose cambia con un pequeño rebote */}
       <div className="relative mx-auto w-full max-w-[22rem] aspect-square">
         <div className="absolute inset-[6%] rounded-full bg-gradient-to-br from-purple-100 via-lilac-100 to-aqua-100" />
-        <Flower className="-left-6 -top-4 w-28 text-white/80" variant="round" heart="var(--color-purple-200)" />
-        <Flower className="-right-4 bottom-4 w-20 text-white/70" heart="var(--color-aqua-300)" />
         <div className="absolute inset-0 flex items-end justify-center pb-[8%]">
           <div key={current} className="emotion-pop h-[86%] flex items-end justify-center">
             <Image

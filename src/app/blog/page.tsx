@@ -3,7 +3,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { getPublishedBlogPosts } from "@/lib/content";
 import { Container, SectionHeading, Card } from "@/components/ui";
-import { Flower } from "@/components/flower";
+import { Pattern } from "@/components/pattern";
 import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = { title: "Blog" };
@@ -13,8 +13,7 @@ export default async function BlogPage() {
 
   return (
     <div className="relative overflow-hidden">
-      <Flower className="-right-36 -top-28 w-[26rem] text-purple-100" heart="var(--color-lilac-100)" />
-      <Flower className="-left-32 -bottom-36 w-[22rem] text-aqua-100" variant="round" heart="var(--color-pink-100)" />
+      <Pattern />
         <Container className="relative py-16 sm:py-24">
           <SectionHeading
             eyebrow="Blog"
