@@ -9,7 +9,7 @@ export function MobileMenu({ ctaHref, ctaLabel }: { ctaHref: string; ctaLabel: s
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -26,7 +26,7 @@ export function MobileMenu({ ctaHref, ctaLabel }: { ctaHref: string; ctaLabel: s
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className="text-ink-900 font-medium text-base"
+              className="text-ink-900 font-medium text-base py-1.5"
             >
               {item.label}
             </Link>

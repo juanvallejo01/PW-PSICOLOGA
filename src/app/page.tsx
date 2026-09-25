@@ -49,9 +49,9 @@ export default async function HomePage() {
         <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-aqua-100 blur-3xl opacity-60 animate-float-slow" />
         <div className="absolute -bottom-32 -left-24 w-96 h-96 rounded-full bg-pink-100 blur-3xl opacity-60 animate-float-slow [animation-delay:2s]" />
         <Pattern />
-        <Container className="relative pt-8 pb-14 sm:py-20 grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] gap-6 lg:gap-12 items-center">
+        <Container className="relative pt-5 pb-12 sm:py-20 grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] gap-6 lg:gap-12 items-center">
           <div className="animate-fade-up text-center lg:text-left">
-            <div className="inline-flex flex-wrap justify-center items-center gap-x-2 gap-y-0.5 rounded-full bg-white/80 border border-purple-200 shadow-sm px-4 py-1.5 mb-6">
+            <div className="inline-flex flex-wrap justify-center items-center gap-x-2 gap-y-0.5 rounded-full bg-white/80 border border-purple-200 shadow-sm px-4 py-1.5 mb-4 sm:mb-6">
               <span className="w-2 h-2 rounded-full bg-aqua-500" />
               <span className="text-sm font-semibold text-purple-700">{settings.siteName}</span>
               <span className="text-sm text-ink-500">· {about.title}</span>
@@ -84,7 +84,7 @@ export default async function HomePage() {
           </div>
 
           {/* Escenario del personaje */}
-          <div className="relative order-first lg:order-none mx-auto w-full max-w-[17rem] sm:max-w-[22rem] lg:max-w-[26rem] aspect-[1/1.05] animate-fade-up [animation-delay:150ms]">
+          <div className="relative order-first lg:order-none mx-auto w-full mt-8 sm:mt-6 lg:mt-0 max-w-[14.5rem] sm:max-w-[18rem] lg:max-w-[26rem] aspect-[1/1.05] animate-fade-up [animation-delay:150ms]">
             <div className="absolute inset-[4%] rounded-full bg-gradient-to-br from-white via-purple-100 to-aqua-100 shadow-xl shadow-purple-200/50" />
             <div className="absolute inset-0 flex items-end justify-center pb-[4%]">
               <AnimatedCharacter
@@ -100,8 +100,8 @@ export default async function HomePage() {
                 visibleFrom="always"
               />
             </div>
-            <div className="bubble absolute -left-[2%] top-[4%] rounded-2xl rounded-bl-sm bg-white px-4 py-2 shadow-lg shadow-purple-200/60 border border-purple-100">
-              <p className="font-display text-base font-semibold text-purple-700">¡Hola! Qué bueno verte</p>
+            <div className="bubble absolute -left-[6%] -top-[9%] sm:-left-[2%] sm:top-[4%] whitespace-nowrap rounded-2xl rounded-bl-sm bg-white px-3 py-1.5 sm:px-4 sm:py-2 shadow-lg shadow-purple-200/60 border border-purple-100">
+              <p className="font-display text-sm sm:text-base font-semibold text-purple-700">¡Hola! Qué bueno verte</p>
             </div>
             {about.yearsExperience > 0 && (
               <div className="absolute -bottom-3 right-0 sm:-right-3 rounded-2xl bg-white shadow-lg shadow-purple-200/60 border border-purple-100 px-5 py-3.5">
@@ -161,7 +161,7 @@ export default async function HomePage() {
           <Pattern />
           <Container className="relative">
             <SectionHeading eyebrow="A quién atiendo" title="Un espacio para cada etapa de la vida" center />
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5 max-sm:[&>*:last-child:nth-child(odd)]:col-span-2 max-sm:[&>*:last-child:nth-child(odd)]:w-[calc(50%-0.5rem)] max-sm:[&>*:last-child:nth-child(odd)]:justify-self-center">
               {audience.map((group, i) => {
                 const accent = ACCENT_ROTATION[i % ACCENT_ROTATION.length];
                 return (
@@ -356,7 +356,7 @@ export default async function HomePage() {
             <div className="space-y-3">
               {faqs.slice(0, 5).map((faq) => (
                 <details key={faq.id} className="group rounded-xl bg-white border border-purple-100 p-5">
-                  <summary className="cursor-pointer font-medium text-ink-900 flex items-center justify-between gap-3">
+                  <summary className="cursor-pointer -m-5 p-5 font-medium text-ink-900 flex items-center justify-between gap-3">
                     {faq.question}
                     <Icon name="arrow-right" className="w-4 h-4 text-purple-400 group-open:rotate-90 transition-transform shrink-0" />
                   </summary>

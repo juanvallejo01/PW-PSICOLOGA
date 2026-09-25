@@ -74,7 +74,7 @@ export default async function ContactoPage() {
                   delay={200}
                   visibleFrom="md"
                 />
-                <Card className="!p-7">
+                <Card className="!p-5 sm:!p-7">
                   <div className="flex items-center gap-3">
                     <span className="w-12 h-12 shrink-0 rounded-full bg-aqua-100 text-aqua-600 flex items-center justify-center">
                       <Icon name="whatsapp" className="w-6 h-6" />
@@ -102,7 +102,7 @@ export default async function ContactoPage() {
                         <p className="text-xs font-semibold uppercase tracking-wide text-aqua-600 mb-1">Tu mensaje</p>
                         {settings.whatsappMessageTemplate}
                       </div>
-                      <ButtonLink href={whatsappHref} external variant="secondary" className="mt-6 w-full !py-3.5 !text-base">
+                      <ButtonLink href={whatsappHref} external variant="secondary" className="mt-6 w-full !py-3.5 !text-base !bg-[#2e8577] hover:!bg-[#256d62]">
                         <Icon name="whatsapp" className="w-5 h-5" />
                         Agendar por WhatsApp
                       </ButtonLink>
@@ -137,7 +137,7 @@ export default async function ContactoPage() {
               <div className="space-y-3">
                 {faqs.map((faq) => (
                   <details key={faq.id} className="group rounded-xl bg-white border border-purple-100 p-5">
-                    <summary className="cursor-pointer font-medium text-ink-900 flex items-center justify-between gap-3">
+                    <summary className="cursor-pointer -m-5 p-5 font-medium text-ink-900 flex items-center justify-between gap-3">
                       {faq.question}
                       <Icon name="arrow-right" className="w-4 h-4 text-purple-400 group-open:rotate-90 transition-transform shrink-0" />
                     </summary>

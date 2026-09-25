@@ -60,7 +60,7 @@ export async function SiteFooter() {
                   href={s.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full bg-purple-600/60 flex items-center justify-center hover:bg-aqua-500 transition-all duration-200 hover:scale-110 hover:-translate-y-0.5"
+                  className="w-11 h-11 sm:w-9 sm:h-9 rounded-full bg-purple-600/60 flex items-center justify-center hover:bg-aqua-500 transition-all duration-200 hover:scale-110 hover:-translate-y-0.5"
                   aria-label={s.platform}
                 >
                   <Icon name={SOCIAL_ICON[s.platform] ?? "heart"} className="w-4.5 h-4.5" />
