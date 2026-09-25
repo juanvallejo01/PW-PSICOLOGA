@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { normalizePrice } from "@/lib/prices";
+import { saveUploadedImage } from "@/lib/uploads";
 
 function str(formData: FormData, key: string) {
   return String(formData.get(key) ?? "").trim();
@@ -22,6 +23,13 @@ export async function addServiceAction(formData: FormData) {
 export async function updateServiceAction(formData: FormData) {
   await requireAdmin();
   const id = str(formData, "id");
+
+  let imageUrl: string | undefined;
+  const image = formData.get("image");
+  if (image instanceof File && image.size > 0) {
+    imageUrl = await saveUploadedImage(image);
+  }
+
   await prisma.service.update({
     where: { id },
     data: {
@@ -33,6 +41,8 @@ export async function updateServiceAction(formData: FormData) {
       priceCop: normalizePrice(str(formData, "priceCop"), "COP"),
       order: Number(formData.get("order")) || 0,
       active: formData.get("active") === "on",
+      ...(imageUrl ? { imageUrl } : {}),
+      ...(formData.get("removeImage") === "on" ? { imageUrl: null } : {}),
     },
   });
   revalidatePath("/", "layout");

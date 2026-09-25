@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import {
   getServices,
   getSiteSettings,
@@ -15,6 +16,7 @@ import { PayButton } from "@/components/pay-button";
 import { PaymentNotice } from "@/components/payment-notice";
 import { startCheckoutAction } from "./checkout-actions";
 import { Reveal } from "@/components/reveal";
+import { GiftTeaser } from "@/components/gift-teaser";
 
 export const metadata: Metadata = {
   title: "Servicios de terapia psicológica online",
@@ -136,27 +138,42 @@ export default async function ServiciosPage() {
 
           <div className="grid sm:grid-cols-2 gap-6">
             {services.map((s, i) => (
-              <Reveal key={s.id} delay={(i % 2) * 90} className={`h-full ${s.description.includes("•") ? "sm:col-span-2" : ""}`}>
-              <Card className="h-full">
-                <p className="font-display text-lg font-semibold text-ink-900">{s.name}</p>
-                {s.description && <ServiceDescription text={s.description} />}
-                <div className="mt-4 flex flex-wrap gap-2 text-xs">
-                  {s.duration && (
-                    <span className="rounded-full bg-purple-100 text-purple-700 px-3 py-1 font-medium">
-                      {s.duration}
-                    </span>
-                  )}
-                  {s.frequency && (
-                    <span className="rounded-full bg-aqua-100 text-aqua-600 px-3 py-1 font-medium">
-                      {s.frequency}
-                    </span>
-                  )}
+              <Reveal key={s.id} delay={(i % 2) * 90} className={`h-full ${s.description.includes("•") || s.imageUrl ? "sm:col-span-2" : ""}`}>
+              <Card className={`h-full ${s.imageUrl ? "grid md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] gap-6 md:gap-8 items-center !p-4 sm:!p-5" : ""}`}>
+                {s.imageUrl && (
+                  <div className="relative aspect-video overflow-hidden rounded-xl border border-purple-100 bg-purple-50">
+                    <Image
+                      src={s.imageUrl}
+                      alt={`${s.name}: ${s.duration || "con Bertha Upegui"}`}
+                      fill
+                      className="object-cover"
+                      sizes="(min-width: 1024px) 480px, (min-width: 640px) 45vw, 100vw"
+                    />
+                  </div>
+                )}
+                <div>
+                  <p className="font-display text-lg font-semibold text-ink-900">{s.name}</p>
+                  {s.description && <ServiceDescription text={s.description} />}
+                  <div className="mt-4 flex flex-wrap gap-2 text-xs">
+                    {s.duration && (
+                      <span className="rounded-full bg-purple-100 text-purple-700 px-3 py-1 font-medium">
+                        {s.duration}
+                      </span>
+                    )}
+                    {s.frequency && (
+                      <span className="rounded-full bg-aqua-100 text-aqua-600 px-3 py-1 font-medium">
+                        {s.frequency}
+                      </span>
+                    )}
+                  </div>
+                  <ServicePrice serviceId={s.id} usd={s.priceUsd} cop={s.priceCop} />
                 </div>
-                <ServicePrice serviceId={s.id} usd={s.priceUsd} cop={s.priceCop} />
               </Card>
               </Reveal>
             ))}
           </div>
+
+          <GiftTeaser className="mt-10" />
 
           {/* AGENDA */}
           <section id="agenda" className="mt-20 scroll-mt-24">
@@ -199,32 +216,122 @@ export default async function ServiciosPage() {
           </section>
 
           {/* PAGOS */}
-          <section className="mt-20">
-            <SectionHeading eyebrow="Métodos de pago" title="Formas de pago" />
-            {paymentMethods.length > 0 ? (
-              <div className="flex flex-wrap gap-3 mb-6">
-                {paymentMethods.map((m) => (
-                  <span key={m.id} className="rounded-full bg-purple-100 text-purple-700 px-4 py-2 text-sm font-medium">
-                    {m.name}
+          <section id="pagos" className="mt-20 scroll-mt-24">
+            <SectionHeading
+              eyebrow="Formas de pago"
+              title="Pago seguro, simple y a tu manera"
+              subtitle="El link de pago de cada servicio te lleva a una página segura de Stripe. Estas son las dos formas de hacerlo."
+            />
+
+            <div className="grid lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] gap-6">
+              <Card className="!p-6 sm:!p-7 border-t-4 border-t-purple-500">
+                <div className="flex items-center gap-3">
+                  <span className="w-11 h-11 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center">
+                    <Icon name="card" className="w-5 h-5" />
                   </span>
-                ))}
+                  <div>
+                    <p className="font-display text-lg font-semibold text-ink-900 leading-tight">Pago en línea con tarjeta</p>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-aqua-600">La opción más rápida</p>
+                  </div>
+                </div>
+                <ul className="mt-5 space-y-3 text-sm text-ink-700">
+                  {[
+                    "Tarjeta de crédito o débito, y Apple Pay o Google Pay cuando tu dispositivo lo permite.",
+                    "Pagas en dólares (USD) o en pesos colombianos (COP), según el botón que elijas en cada servicio.",
+                    "Recibes el comprobante en tu correo apenas se confirma el pago.",
+                    "Al pagar se desbloquea tu regalo: el Diario de la Gratitud.",
+                  ].map((line) => (
+                    <li key={line} className="flex gap-3">
+                      <span className="mt-0.5 w-5 h-5 shrink-0 rounded-full bg-aqua-100 text-aqua-600 flex items-center justify-center">
+                        <Icon name="check" className="w-3 h-3" />
+                      </span>
+                      {line}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-5 flex flex-wrap items-center gap-2 text-xs font-semibold text-ink-500">
+                  {["Visa", "Mastercard", "American Express", "Apple Pay", "Google Pay"].map((brand) => (
+                    <span key={brand} className="rounded-md border border-purple-100 bg-white px-2.5 py-1">
+                      {brand}
+                    </span>
+                  ))}
+                </div>
+              </Card>
+
+              <div className="space-y-6">
+                <Card className="!p-6">
+                  <p className="font-display font-semibold text-ink-900">¿Cómo funciona?</p>
+                  <ol className="mt-4 space-y-3 text-sm text-ink-700">
+                    {[
+                      "Pulsa “Link de pago” en el servicio y la moneda que prefieras.",
+                      "Se abre la página segura de Stripe: completa tus datos y paga.",
+                      "Vuelves aquí con tu pago confirmado y tu regalo desbloqueado.",
+                    ].map((step, n) => (
+                      <li key={step} className="flex gap-3">
+                        <span className="w-6 h-6 shrink-0 rounded-full bg-purple-100 text-purple-600 text-xs font-semibold flex items-center justify-center">
+                          {n + 1}
+                        </span>
+                        <span className="pt-0.5">{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </Card>
+
+                <div className="flex gap-3 rounded-2xl bg-aqua-100/70 px-5 py-4 text-sm text-ink-700">
+                  <Icon name="lock" className="w-5 h-5 text-aqua-600 shrink-0 mt-0.5" />
+                  <p>
+                    <strong className="font-semibold text-ink-900">Tus datos están protegidos.</strong> La tarjeta la procesa Stripe con cifrado
+                    de nivel bancario; yo no veo ni guardo tus datos de pago.
+                  </p>
+                </div>
               </div>
-            ) : (
-              <p className="text-ink-500 text-sm mb-6">
-                Los métodos de pago aceptados se confirman por contacto directo.
-              </p>
-            )}
-            <div className="grid sm:grid-cols-3 gap-4 text-sm">
+            </div>
+
+            <Card className="mt-6 !p-6 sm:!p-7">
+              <div className="flex items-start gap-3">
+                <span className="w-11 h-11 shrink-0 rounded-full bg-pink-100 text-pink-500 flex items-center justify-center">
+                  <Icon name="heart" className="w-5 h-5" />
+                </span>
+                <div className="min-w-0">
+                  <p className="font-display text-lg font-semibold text-ink-900 leading-tight">¿Prefieres otra forma de pago?</p>
+                  <p className="mt-1 text-sm text-ink-500 leading-relaxed">
+                    No hay problema. Si la tarjeta no te acomoda, escríbeme y coordinamos otra opción
+                    {paymentMethods.length > 0 ? ":" : ", por ejemplo una transferencia."}
+                  </p>
+                  {paymentMethods.length > 0 && (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {paymentMethods.map((m) => (
+                        <span key={m.id} className="rounded-full bg-purple-100 text-purple-700 px-4 py-1.5 text-sm font-medium">
+                          {m.name}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  {whatsappHref && (
+                    <div className="mt-4">
+                      <ButtonLink href={whatsappHref} external variant="ghost">
+                        <Icon name="whatsapp" className="w-4 h-4" />
+                        Consultar por WhatsApp
+                      </ButtonLink>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </Card>
+
+            <div className="mt-6 grid sm:grid-cols-3 gap-4 text-sm">
               <Card>
                 <p className="text-ink-500">Momento del pago</p>
                 <p className="font-medium text-ink-900 mt-1">{paymentInfo.whenToPay}</p>
               </Card>
               <Card>
-                <p className="text-ink-500">Factura / recibo</p>
-                <p className="font-medium text-ink-900 mt-1">{paymentInfo.issuesInvoice ? "Sí" : "Consultar"}</p>
+                <p className="text-ink-500">Comprobante</p>
+                <p className="font-medium text-ink-900 mt-1">
+                  {paymentInfo.issuesInvoice ? "Factura o recibo" : "Recibo por correo al pagar en línea"}
+                </p>
               </Card>
               <Card>
-                <p className="text-ink-500">Obra social / seguro</p>
+                <p className="text-ink-500">Seguro / obra social</p>
                 <p className="font-medium text-ink-900 mt-1">{paymentInfo.acceptsInsurance ? "Sí" : "Consultar"}</p>
               </Card>
             </div>

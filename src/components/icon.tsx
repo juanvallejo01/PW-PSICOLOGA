@@ -19,7 +19,11 @@ type IconName =
   | "heart"
   | "leaf"
   | "compass"
-  | "sun";
+  | "sun"
+  | "lock"
+  | "gift"
+  | "download"
+  | "card";
 
 const paths: Record<IconName, React.ReactNode> = {
   instagram: (
@@ -103,6 +107,25 @@ const paths: Record<IconName, React.ReactNode> = {
       <path d="m14.5 9.5-2 5-5 2 2-5Z" />
     </>
   ),
+  lock: (
+    <>
+      <rect x="4.5" y="10.5" width="15" height="10" rx="2.5" />
+      <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5M12 15v2" />
+    </>
+  ),
+  gift: (
+    <>
+      <rect x="3.5" y="9" width="17" height="4" rx="1.2" />
+      <path d="M5 13v7h14v-7M12 9v11M12 9c-1.5-4.5-6-4-6-1.5C6 9 9 9 12 9Zm0 0c1.5-4.5 6-4 6-1.5 0 1.5-3 1.5-6 1.5Z" />
+    </>
+  ),
+  card: (
+    <>
+      <rect x="2.5" y="5" width="19" height="14" rx="2.5" />
+      <path d="M2.5 10h19M6 15h4" />
+    </>
+  ),
+  download: <path d="M12 4v11m0 0-4-4m4 4 4-4M5 19h14" />,
   sun: (
     <>
       <circle cx="12" cy="12" r="4" />

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getServices } from "@/lib/content";
-import { AdminHeading, AdminCard, SaveButton, CheckboxField } from "@/components/admin/ui";
+import { AdminHeading, AdminCard, SaveButton, CheckboxField, ImageField } from "@/components/admin/ui";
 import { addServiceAction, updateServiceAction, deleteServiceAction } from "./actions";
 
 export const metadata: Metadata = { title: "Servicios" };
@@ -33,6 +33,10 @@ export default async function AdminServiciosPage() {
                 <input name="priceCop" inputMode="numeric" defaultValue={s.priceCop ?? ""} placeholder="Precio en pesos colombianos (ej: 250000)" className="w-full bg-transparent outline-none" />
               </label>
               <input name="order" type="number" defaultValue={s.order} placeholder="Orden" className="rounded-lg border border-purple-200 px-2 py-2 text-sm" />
+              <div className="sm:col-span-2 rounded-lg border border-dashed border-purple-200 bg-white p-3 space-y-2">
+                <ImageField label="Imagen del servicio (opcional, formato horizontal 16:9)" name="image" currentUrl={s.imageUrl} />
+                {s.imageUrl && <CheckboxField label="Quitar la imagen actual" name="removeImage" />}
+              </div>
               <div className="flex items-center justify-between sm:col-span-2 mt-1">
                 <CheckboxField label="Activo (visible en el sitio)" name="active" defaultChecked={s.active} />
                 <div className="flex gap-3">

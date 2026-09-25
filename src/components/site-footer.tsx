@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { getSiteSettings, getSocialLinks, getAboutContent, buildWhatsappUrl } from "@/lib/content";
 import { Icon, type IconName } from "@/components/icon";
 
@@ -68,6 +69,9 @@ export async function SiteFooter() {
               ))}
             </div>
           )}
+          <Link href="/diario-de-gratitud" className="text-sm text-purple-200 hover:text-white underline-offset-4 hover:underline">
+            Diario de la Gratitud · tu regalo
+          </Link>
           <a
             href={ctaHref}
             target={settings.bookingMode === "whatsapp" ? "_blank" : undefined}

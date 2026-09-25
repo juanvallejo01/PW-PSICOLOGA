@@ -110,10 +110,10 @@ export default async function SobreMiPage() {
               <div className="mt-12 grid sm:grid-cols-[13rem_minmax(0,1fr)] gap-6 items-center">
                 <div className="relative aspect-[3/4] w-full max-w-[13rem] mx-auto sm:mx-0 rounded-2xl overflow-hidden border-4 border-white shadow-lg shadow-purple-200/60">
                   <Image
-                    src="/bertha/bertha-12.jpg"
-                    alt={`${settings.siteName} sonriendo, en su consulta`}
+                    src="/bertha.jpeg"
+                    alt={`${settings.siteName}, psicóloga`}
                     fill
-                    className="object-cover object-[50%_65%]"
+                    className="object-cover object-[50%_35%]"
                     sizes="208px"
                   />
                 </div>

@@ -54,7 +54,8 @@ export async function createCheckoutSession({ serviceId, serviceName, price, cur
     // Stripe le pide al cliente su teléfono para que Bertha pueda coordinar la sesión.
     "phone_number_collection[enabled]": "true",
     "payment_intent_data[description]": serviceName,
-    success_url: `${SITE_URL}/pago/exito?session_id={CHECKOUT_SESSION_ID}`,
+    // Pasa por /api/regalo/activar, que confirma el pago, desbloquea el regalo y muestra la página de éxito.
+    success_url: `${SITE_URL}/api/regalo/activar?session_id={CHECKOUT_SESSION_ID}&destino=exito`,
     cancel_url: `${SITE_URL}/servicios?pago=cancelado`,
   });
   for (const [k, v] of Object.entries(metadata)) {
@@ -92,6 +93,18 @@ export async function getCheckoutSummary(sessionId: string): Promise<CheckoutSum
     };
   } catch (err) {
     console.error("[stripe] no se pudo consultar la sesión", err);
+    return null;
+  }
+}
+
+/** Busca un pago confirmado hecho con ese correo (para recuperar el regalo en otro dispositivo). */
+export async function findPaidSessionIdByEmail(email: string): Promise<string | null> {
+  const params = new URLSearchParams({ "customer_details[email]": email.trim().toLowerCase(), limit: "20" });
+  try {
+    const res = await stripeRequest<{ data: { id: string; payment_status: string }[] }>(`/checkout/sessions?${params}`);
+    return res.data.find((s) => s.payment_status === "paid")?.id ?? null;
+  } catch (err) {
+    console.error("[stripe] no se pudo buscar el pago por correo", err);
     return null;
   }
 }

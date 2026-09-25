@@ -125,6 +125,7 @@ model Service {
   priceUsd    String? // dólares estadounidenses, solo el número (ej. "45" o "45.5"); null => sin precio en USD
   priceCop    String? // pesos colombianos, solo el número entero (ej. "250000"); null => sin precio en COP
   frequency   String  @default("")
+  imageUrl    String? // imagen opcional del servicio (ej. banner del taller); null => tarjeta sin imagen
   order       Int     @default(0)
   active      Boolean @default(true)
 }

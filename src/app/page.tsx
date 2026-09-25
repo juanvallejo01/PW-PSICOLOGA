@@ -18,6 +18,7 @@ import { AnimatedCharacter } from "@/components/animated-character";
 import { EmotionPicker } from "@/components/emotion-picker";
 import { Pattern } from "@/components/pattern";
 import { Reveal } from "@/components/reveal";
+import { GiftTeaser } from "@/components/gift-teaser";
 import { JsonLd } from "@/components/json-ld";
 import { buildHomeJsonLd } from "@/lib/seo";
 
@@ -274,6 +275,15 @@ export default async function HomePage() {
           </Container>
         </section>
       )}
+
+      {/* REGALO: DIARIO DE LA GRATITUD */}
+      <section className="relative py-12 sm:py-16">
+        <Container className="max-w-3xl">
+          <Reveal>
+            <GiftTeaser />
+          </Reveal>
+        </Container>
+      </section>
 
       {/* CTA banda */}
       <section className="relative overflow-hidden py-20 sm:py-24 section-band">

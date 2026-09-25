@@ -37,6 +37,22 @@ export default async function PagoExitoPage(props: PageProps<"/pago/exito">) {
               {summary.serviceName && <>Recibimos tu pago de <strong>{summary.serviceName}</strong>{price ? ` (${price})` : ""}. </>}
               Stripe te enviará el comprobante a tu correo. El siguiente paso es acordar el día y la hora de tu sesión.
             </p>
+            <div className="mt-8 text-left">
+              <p className="mb-2 text-center text-sm font-semibold text-aqua-600">Tu regalo ya está desbloqueado</p>
+              <Link
+                href="/diario-de-gratitud"
+                className="group flex items-center gap-4 rounded-3xl border border-aqua-300 bg-gradient-to-r from-white to-aqua-100/70 p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-aqua-300/40"
+              >
+                <span className="w-12 h-12 shrink-0 rounded-full bg-aqua-500 text-white flex items-center justify-center">
+                  <Icon name="gift" className="w-6 h-6" />
+                </span>
+                <span>
+                  <span className="block font-display font-semibold text-ink-900">Diario de la Gratitud</span>
+                  <span className="block text-sm text-ink-700">Descárgalo ahora, es tu regalo por esta sesión.</span>
+                </span>
+                <Icon name="arrow-right" className="ml-auto w-5 h-5 text-purple-600 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+            </div>
             {whatsappHref && (
               <div className="mt-8">
                 <ButtonLink href={whatsappHref} external variant="secondary" className="!bg-[#2e8577] hover:!bg-[#256d62]">
