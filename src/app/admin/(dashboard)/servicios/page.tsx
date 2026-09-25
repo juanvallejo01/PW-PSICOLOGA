@@ -21,7 +21,7 @@ export default async function AdminServiciosPage() {
             <form key={s.id} action={updateServiceAction} className="grid sm:grid-cols-2 gap-2 bg-purple-50 rounded-lg p-4">
               <input type="hidden" name="id" value={s.id} />
               <input name="name" defaultValue={s.name} placeholder="Nombre" className="rounded-lg border border-purple-200 px-2 py-2 text-sm sm:col-span-2" />
-              <textarea name="description" defaultValue={s.description} placeholder="Descripción" className="rounded-lg border border-purple-200 px-2 py-2 text-sm sm:col-span-2" rows={2} />
+              <textarea name="description" defaultValue={s.description} placeholder="Descripción (una línea por párrafo; • para lista, # para etiqueta destacada)" className="rounded-lg border border-purple-200 px-2 py-2 text-sm sm:col-span-2" rows={4} />
               <input name="duration" defaultValue={s.duration} placeholder="Duración (ej: 45 min)" className="rounded-lg border border-purple-200 px-2 py-2 text-sm" />
               <input name="frequency" defaultValue={s.frequency} placeholder="Frecuencia (ej: semanal)" className="rounded-lg border border-purple-200 px-2 py-2 text-sm" />
               <input name="price" defaultValue={s.price ?? ""} placeholder="Precio (vacío = Consultar valores)" className="rounded-lg border border-purple-200 px-2 py-2 text-sm" />

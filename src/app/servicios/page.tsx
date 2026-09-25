@@ -14,6 +14,52 @@ import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = { title: "Servicios" };
 
+/**
+ * La descripción admite varias líneas: las que empiezan con "•" se muestran como lista, las que
+ * empiezan con "#" como etiqueta destacada (nombre del programa) y las que son una pregunta
+ * completa ("¿…?") como subtítulo. Así el programa largo se edita desde el admin.
+ */
+function ServiceDescription({ text }: { text: string }) {
+  const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
+  const blocks: ({ type: "p" | "h" | "tag"; text: string } | { type: "ul"; items: string[] })[] = [];
+  for (const line of lines) {
+    if (line.startsWith("•")) {
+      const item = line.replace(/^•\s*/, "");
+      const last = blocks[blocks.length - 1];
+      if (last?.type === "ul") last.items.push(item);
+      else blocks.push({ type: "ul", items: [item] });
+    } else if (line.startsWith("#")) {
+      blocks.push({ type: "tag", text: line.replace(/^#\s*/, "") });
+    } else {
+      blocks.push({ type: line.startsWith("¿") && line.endsWith("?") ? "h" : "p", text: line });
+    }
+  }
+  return (
+    <div className="mt-2 space-y-3 text-sm leading-relaxed text-ink-500">
+      {blocks.map((b, i) =>
+        b.type === "ul" ? (
+          <ul key={i} className="space-y-1.5">
+            {b.items.map((item) => (
+              <li key={item} className="flex gap-2.5">
+                <span className="mt-2 w-1.5 h-1.5 shrink-0 rounded-full bg-aqua-500" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        ) : b.type === "tag" ? (
+          <p key={i}>
+            <span className="inline-block rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold text-purple-700">{b.text}</span>
+          </p>
+        ) : b.type === "h" ? (
+          <p key={i} className="pt-1 font-semibold text-ink-900">{b.text}</p>
+        ) : (
+          <p key={i}>{b.text}</p>
+        ),
+      )}
+    </div>
+  );
+}
+
 export default async function ServiciosPage() {
   const [services, settings, paymentInfo, paymentMethods] = await Promise.all([
     getServices(true),
@@ -46,10 +92,10 @@ export default async function ServiciosPage() {
 
           <div className="grid sm:grid-cols-2 gap-6">
             {services.map((s, i) => (
-              <Reveal key={s.id} delay={(i % 2) * 90} className="h-full">
+              <Reveal key={s.id} delay={(i % 2) * 90} className={`h-full ${s.description.includes("•") ? "sm:col-span-2" : ""}`}>
               <Card className="h-full">
                 <p className="font-display text-lg font-semibold text-ink-900">{s.name}</p>
-                {s.description && <p className="text-ink-500 text-sm mt-2 leading-relaxed">{s.description}</p>}
+                {s.description && <ServiceDescription text={s.description} />}
                 <div className="mt-4 flex flex-wrap gap-2 text-xs">
                   {s.duration && (
                     <span className="rounded-full bg-purple-100 text-purple-700 px-3 py-1 font-medium">
