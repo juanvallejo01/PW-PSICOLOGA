@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { normalizePrice } from "@/lib/prices";
 
 function str(formData: FormData, key: string) {
   return String(formData.get(key) ?? "").trim();
@@ -28,7 +29,8 @@ export async function updateServiceAction(formData: FormData) {
       description: str(formData, "description"),
       duration: str(formData, "duration"),
       frequency: str(formData, "frequency"),
-      price: str(formData, "price") || null,
+      priceUsd: normalizePrice(str(formData, "priceUsd"), "USD"),
+      priceCop: normalizePrice(str(formData, "priceCop"), "COP"),
       order: Number(formData.get("order")) || 0,
       active: formData.get("active") === "on",
     },

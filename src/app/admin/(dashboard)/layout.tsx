@@ -1,8 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSessionUserId } from "@/lib/auth";
 import { ADMIN_NAV } from "@/lib/admin-nav";
 import { logoutAction } from "./actions";
+
+export const metadata: Metadata = { title: "Panel admin", robots: { index: false, follow: false } };
 
 export default async function AdminDashboardLayout({ children }: { children: React.ReactNode }) {
   const userId = await getSessionUserId();

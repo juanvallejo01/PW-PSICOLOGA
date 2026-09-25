@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { loginAction } from "./actions";
 
-export const metadata: Metadata = { title: "Ingresar al panel" };
+export const metadata: Metadata = { title: "Ingresar al panel", robots: { index: false, follow: false } };
 
 export default async function AdminLoginPage(props: PageProps<"/admin/login">) {
   const searchParams = await props.searchParams;

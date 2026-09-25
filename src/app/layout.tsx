@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Poppins, Nunito } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { PERSON_NAME, SITE_DESCRIPTION, SITE_KEYWORDS, SITE_URL } from "@/lib/site";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -17,13 +18,48 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Bertha Cecilia Upegui — Psicóloga Terapeuta | Terapia online en español",
-    template: "%s | Bertha Cecilia Upegui, Psicóloga",
+    default: "Bertha Upegui Galofre | Psicóloga y terapia online en español",
+    template: "%s | Bertha Upegui, Psicóloga",
   },
-  description:
-    "Bertha Cecilia Upegui, psicóloga terapeuta. Terapia online para adultos, jóvenes, niños, parejas y familias de habla hispana, en cualquier parte del mundo.",
+  description: SITE_DESCRIPTION,
+  keywords: SITE_KEYWORDS,
+  applicationName: "Bertha Upegui Galofre, Psicóloga",
+  authors: [{ name: PERSON_NAME, url: SITE_URL }],
+  creator: PERSON_NAME,
+  category: "health",
+  alternates: {
+    canonical: "/",
+    languages: { es: "/", "x-default": "/" },
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Bertha Upegui Galofre, Psicóloga",
+    locale: "es_LA",
+    alternateLocale: ["es_ES", "es_CO", "es_MX", "es_US"],
+    url: "/",
+    title: "Bertha Upegui Galofre | Psicóloga y terapia online en español",
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bertha Upegui Galofre | Psicóloga y terapia online en español",
+    description: SITE_DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+  },
+  formatDetection: { telephone: false },
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
+    other: process.env.BING_SITE_VERIFICATION ? { "msvalidate.01": process.env.BING_SITE_VERIFICATION } : undefined,
+  },
 };
+
+export const viewport: Viewport = { themeColor: "#7a58bf" };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

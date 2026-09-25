@@ -6,7 +6,13 @@ import { Container, SectionHeading, Card } from "@/components/ui";
 import { Pattern } from "@/components/pattern";
 import { Reveal } from "@/components/reveal";
 
-export const metadata: Metadata = { title: "Blog" };
+export const metadata: Metadata = {
+  title: "Blog de psicología y bienestar emocional",
+  description:
+    "Reflexiones y artículos de psicología, emociones, relaciones y bienestar emocional, escritos por la psicóloga Bertha Upegui.",
+  alternates: { canonical: "/blog" },
+  openGraph: { url: "/blog", title: "Blog de psicología y bienestar emocional" },
+};
 
 export default async function BlogPage() {
   const posts = await getPublishedBlogPosts();

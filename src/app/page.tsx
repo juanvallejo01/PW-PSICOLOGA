@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -17,6 +18,8 @@ import { AnimatedCharacter } from "@/components/animated-character";
 import { EmotionPicker } from "@/components/emotion-picker";
 import { Pattern } from "@/components/pattern";
 import { Reveal } from "@/components/reveal";
+import { JsonLd } from "@/components/json-ld";
+import { buildHomeJsonLd } from "@/lib/seo";
 
 const AUDIENCE_ICON: IconName[] = ["child", "teen", "adult", "couple", "family"];
 const ACCENT_ROTATION = [
@@ -24,6 +27,10 @@ const ACCENT_ROTATION = [
   { bg: "bg-aqua-100", text: "text-aqua-600", dot: "bg-aqua-500", border: "border-t-aqua-500" },
   { bg: "bg-pink-100", text: "text-pink-500", dot: "bg-pink-500", border: "border-t-pink-500" },
 ];
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/", languages: { es: "/", "x-default": "/" } },
+};
 
 export default async function HomePage() {
   const [settings, about, audience, specialties, steps, faqs, testimonials, posts] = await Promise.all([
@@ -42,8 +49,11 @@ export default async function HomePage() {
   const isWhatsapp = settings.bookingMode === "whatsapp";
   const aboutIntro = about.bioHtml.match(/<p>([\s\S]*?)<\/p>/)?.[1].replace(/<[^>]+>/g, "").trim();
 
+  const jsonLd = await buildHomeJsonLd();
+
   return (
     <>
+      <JsonLd data={jsonLd} />
       {/* HERO */}
       <section className="relative overflow-hidden bg-gradient-to-b from-lilac-100 via-purple-50 to-background [mask-image:linear-gradient(to_bottom,#000_88%,transparent)]">
         <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-aqua-100 blur-3xl opacity-60 animate-float-slow" />

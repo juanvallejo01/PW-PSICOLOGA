@@ -5,7 +5,13 @@ import { AnimatedCharacter } from "@/components/animated-character";
 import { Pattern } from "@/components/pattern";
 import { Reveal } from "@/components/reveal";
 
-export const metadata: Metadata = { title: "Cómo trabajo" };
+export const metadata: Metadata = {
+  title: "Cómo trabajo: proceso de terapia psicológica online",
+  description:
+    "Así es el proceso de terapia online: valoración inicial, evaluación, definición de objetivos, técnicas y acompañamiento continuo, a tu ritmo y en español.",
+  alternates: { canonical: "/como-trabajo" },
+  openGraph: { url: "/como-trabajo", title: "Cómo trabajo: proceso de terapia psicológica online" },
+};
 
 export default async function ComoTrabajoPage() {
   const steps = await getProcessSteps();

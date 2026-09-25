@@ -7,7 +7,13 @@ import { AnimatedCharacter } from "@/components/animated-character";
 import { Pattern } from "@/components/pattern";
 import { ReadMore } from "@/components/read-more";
 
-export const metadata: Metadata = { title: "Sobre mí" };
+export const metadata: Metadata = {
+  title: "Sobre mí, psicóloga terapeuta",
+  description:
+    "Conoce a Bertha Cecilia Upegui Galofre: psicóloga con más de 16 años de experiencia acompañando procesos de cambio y bienestar emocional, en línea y en español.",
+  alternates: { canonical: "/sobre-mi" },
+  openGraph: { url: "/sobre-mi", title: "Sobre mí, psicóloga terapeuta", type: "profile" },
+};
 
 export default async function SobreMiPage() {
   const [about, education, settings] = await Promise.all([

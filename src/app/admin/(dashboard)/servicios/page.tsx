@@ -12,7 +12,7 @@ export default async function AdminServiciosPage() {
     <div className="max-w-4xl space-y-6">
       <AdminHeading
         title="Servicios y precios"
-        subtitle="Dejá el precio en blanco para mostrar 'Consultar valores'."
+        subtitle="Cada servicio tiene dos precios: dólares estadounidenses (USD) y pesos colombianos (COP). Cada precio que cargues muestra su botón de pago en línea; si dejás ambos en blanco, el sitio muestra 'Consultar valores'."
       />
 
       <AdminCard>
@@ -24,7 +24,14 @@ export default async function AdminServiciosPage() {
               <textarea name="description" defaultValue={s.description} placeholder="Descripción (una línea por párrafo; • para lista, # para etiqueta destacada)" className="rounded-lg border border-purple-200 px-2 py-2 text-sm sm:col-span-2" rows={4} />
               <input name="duration" defaultValue={s.duration} placeholder="Duración (ej: 45 min)" className="rounded-lg border border-purple-200 px-2 py-2 text-sm" />
               <input name="frequency" defaultValue={s.frequency} placeholder="Frecuencia (ej: semanal)" className="rounded-lg border border-purple-200 px-2 py-2 text-sm" />
-              <input name="price" defaultValue={s.price ?? ""} placeholder="Precio (vacío = Consultar valores)" className="rounded-lg border border-purple-200 px-2 py-2 text-sm" />
+              <label className="flex items-center gap-2 rounded-lg border border-purple-200 bg-white px-3 py-2 text-sm focus-within:ring-2 focus-within:ring-purple-300">
+                <span className="text-xs font-semibold text-purple-700 shrink-0">USD $</span>
+                <input name="priceUsd" inputMode="decimal" defaultValue={s.priceUsd ?? ""} placeholder="Precio en dólares (ej: 45)" className="w-full bg-transparent outline-none" />
+              </label>
+              <label className="flex items-center gap-2 rounded-lg border border-purple-200 bg-white px-3 py-2 text-sm focus-within:ring-2 focus-within:ring-purple-300">
+                <span className="text-xs font-semibold text-purple-700 shrink-0">COP $</span>
+                <input name="priceCop" inputMode="numeric" defaultValue={s.priceCop ?? ""} placeholder="Precio en pesos colombianos (ej: 250000)" className="w-full bg-transparent outline-none" />
+              </label>
               <input name="order" type="number" defaultValue={s.order} placeholder="Orden" className="rounded-lg border border-purple-200 px-2 py-2 text-sm" />
               <div className="flex items-center justify-between sm:col-span-2 mt-1">
                 <CheckboxField label="Activo (visible en el sitio)" name="active" defaultChecked={s.active} />

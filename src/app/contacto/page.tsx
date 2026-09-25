@@ -5,7 +5,13 @@ import { Icon, type IconName } from "@/components/icon";
 import { AnimatedCharacter } from "@/components/animated-character";
 import { Pattern } from "@/components/pattern";
 
-export const metadata: Metadata = { title: "Contacto" };
+export const metadata: Metadata = {
+  title: "Agenda tu cita de terapia online por WhatsApp",
+  description:
+    "Agenda tu primera sesión de terapia psicológica online en español, directo por WhatsApp. Resuelve tus dudas frecuentes sobre costos, modalidad y horarios.",
+  alternates: { canonical: "/contacto" },
+  openGraph: { url: "/contacto", title: "Agenda tu cita de terapia online por WhatsApp" },
+};
 
 const SOCIAL_ICON: Record<string, IconName> = {
   instagram: "instagram",
@@ -26,7 +32,7 @@ function formatPhone(raw: string | null) {
 const BOOKING_STEPS = [
   "Toca el botón de WhatsApp",
   "Se abre el chat con tu mensaje ya escrito, solo envíalo",
-  "Te respondo para acordar día y hora de tu sesión",
+  "Te respondo para acordar día y hora; el pago lo confirmamos con un link seguro o como te quede mejor",
 ];
 
 export default async function ContactoPage() {
